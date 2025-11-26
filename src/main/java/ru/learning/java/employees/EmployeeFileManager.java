@@ -5,7 +5,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 
 public class EmployeeFileManager implements AutoCloseable {
-  private BufferedWriter writer;
+  private final BufferedWriter writer;
 
   public EmployeeFileManager(String filename) throws IOException {
     writer = new BufferedWriter(new FileWriter(filename));
@@ -18,9 +18,7 @@ public class EmployeeFileManager implements AutoCloseable {
 
   @Override
   public void close() throws IOException {
-    if (writer != null) {
-      writer.close();
-      System.out.println("Файл успешно закрыт");
-    }
+    writer.close();
+    System.out.println("Файл успешно закрыт");
   }
 }

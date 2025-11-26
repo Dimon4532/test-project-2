@@ -15,9 +15,6 @@ public class ProjectManager {
     this.team = new ArrayList<>();
   }
 
-  /**
-   * Добавляет сотрудника в команду с валидацией
-   */
   public void addEmployee(Employee employee) throws SalaryException, InvalidEmployeeException {
     validateEmployee(employee);
     team.add(employee);
@@ -57,7 +54,7 @@ public class ProjectManager {
           System.out.println("Назначена задача для разработчика " + emp.getName() + ": Разработка функционала");
           break;
         case "TeamLead":
-          System.out.println("Назначена задача для тимлида " + emp.getName() + ": Код-ревью и управление командой");
+          System.out.println("Назначена задача для TeamLead'а " + emp.getName() + ": Код-ревью и управление командой");
           break;
         case "QAEngineer":
           System.out.println("Назначена задача для тестировщика " + emp.getName() + ": Тестирование приложения");

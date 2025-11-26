@@ -8,11 +8,11 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class BonusBudget {
 
   private int badCounter = 0;
-  private AtomicInteger goodCounter = new AtomicInteger(0);
+  private final AtomicInteger goodCounter = new AtomicInteger(0);
 
-  private List<String> badLog = new ArrayList<>();
+  private final List<String> badLog = new ArrayList<>();
 
-  private List<String> goodLog = new CopyOnWriteArrayList<>();
+  private final List<String> goodLog = new CopyOnWriteArrayList<>();
 
   public void runRaceConditionDemo() throws InterruptedException {
     List<Thread> threads = new ArrayList<>();

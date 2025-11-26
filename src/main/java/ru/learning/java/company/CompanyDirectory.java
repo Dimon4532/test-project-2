@@ -5,11 +5,11 @@ import ru.learning.java.employees.Employee;
 import java.util.*;
 
 public class CompanyDirectory {
-    private List<Employee> allEmployees = new ArrayList<>();
+    private final List<Employee> allEmployees = new ArrayList<>();
 
-    private Map<String, Employee> employeesById = new HashMap<>();
+    private final Map<String, Employee> employeesById = new HashMap<>();
 
-    private Set<String> departments = new HashSet<>();
+    private final Set<String> departments = new HashSet<>();
 
     public void addEmployee(Employee emp) {
         allEmployees.add(emp);

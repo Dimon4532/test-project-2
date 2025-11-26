@@ -81,7 +81,7 @@ class EmployeeFileManagerTest {
     EmployeeFileManager fileManager = new EmployeeFileManager(TEST_FILE);
     fileManager.writeEmployee(developer);
 
-    assertDoesNotThrow(() -> fileManager.close(),
+    assertDoesNotThrow(fileManager::close,
       "Закрытие файла не должно вызывать исключений");
 
     assertTrue(Files.exists(Path.of(TEST_FILE)), "Файл должен существовать после закрытия");
