@@ -9,7 +9,7 @@ public class CompanyDirectory {
 
     private final Map<String, Employee> employeesById = new HashMap<>();
 
-    private final Set<String> departments = new HashSet<>();
+    private final Set<Department> departments = new HashSet<>();
 
     public void addEmployee(Employee emp) {
         allEmployees.add(emp);

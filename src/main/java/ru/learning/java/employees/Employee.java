@@ -1,12 +1,13 @@
 package ru.learning.java.employees;
 
+import ru.learning.java.company.Department;
 import ru.learning.java.exceptions.SalaryException;
 
 public abstract class Employee {
   private String name;
   private double salary;
   private String id;
-  private String department;
+  private Department department;
 
     public String getId() {
         return id;
@@ -16,11 +17,11 @@ public abstract class Employee {
         this.id = id;
     }
 
-    public String getDepartment() {
+    public Department getDepartment() {
         return department;
     }
 
-    public void setDepartment(String department) {
+    public void setDepartment(Department department) {
         this.department = department;
     }
 
