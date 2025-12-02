@@ -2,6 +2,7 @@ package ru.learning.java;
 
 import ru.learning.java.company.BonusBudget;
 import ru.learning.java.company.CompanyDirectory;
+import ru.learning.java.company.Department;
 import ru.learning.java.company.ReportGenerator;
 import ru.learning.java.company.Team;
 import ru.learning.java.employees.Designer;
@@ -34,14 +35,14 @@ public class Main {
       manager.setName("Alice");
       manager.setSalary(5000);
       manager.setId("id-manager");
-      manager.setDepartment("Flow");
+      manager.setDepartment(Department.FLOW);
       projectManager.addEmployee(manager);
 
       Developer developer = new Developer();
       developer.setName("Bob");
       developer.setSalary(4500);
       developer.setId("id-dev");
-      developer.setDepartment("Designer");
+      developer.setDepartment(Department.DESIGN);
       projectManager.addEmployee(developer);
 
       TeamLead teamLead = new TeamLead();
@@ -49,21 +50,21 @@ public class Main {
       teamLead.setSalary(6000);
       teamLead.setTeamSize(5);
       teamLead.setId("id-team-lead");
-      manager.setDepartment("Flow");
+      manager.setDepartment(Department.FLOW);
       projectManager.addEmployee(teamLead);
 
       QAEngineer qaEngineer = new QAEngineer();
       qaEngineer.setName("Diana");
       qaEngineer.setSalary(4000);
       qaEngineer.setId("id-qa");
-      qaEngineer.setDepartment("Engine");
+      qaEngineer.setDepartment(Department.ENGINE);
       projectManager.addEmployee(qaEngineer);
 
       Designer designer = new Designer();
       designer.setName("Eve");
       designer.setSalary(4200);
       designer.setId("id-designer");
-      designer.setDepartment("Designer");
+      designer.setDepartment(Department.DESIGN);
       projectManager.addEmployee(designer);
 
       System.out.println("\n=== Полиморфизм в действии ===");
