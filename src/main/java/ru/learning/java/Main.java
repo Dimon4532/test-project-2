@@ -5,14 +5,7 @@ import ru.learning.java.company.CompanyDirectory;
 import ru.learning.java.company.Department;
 import ru.learning.java.company.ReportGenerator;
 import ru.learning.java.company.Team;
-import ru.learning.java.employees.Designer;
-import ru.learning.java.employees.Developer;
-import ru.learning.java.employees.Employee;
-import ru.learning.java.employees.EmployeeFileManager;
-import ru.learning.java.employees.Manager;
-import ru.learning.java.employees.ProjectManager;
-import ru.learning.java.employees.QAEngineer;
-import ru.learning.java.employees.TeamLead;
+import ru.learning.java.employees.*;
 import ru.learning.java.exceptions.InvalidEmployeeException;
 import ru.learning.java.exceptions.SalaryException;
 
@@ -67,9 +60,18 @@ public class Main {
       designer.setDepartment(Department.DESIGN);
       projectManager.addEmployee(designer);
 
+        HRManager hrManager = new HRManager();
+        hrManager.setName("Ivan");
+        hrManager.setSalary(4800);
+        projectManager.addEmployee(hrManager);
+
       System.out.println("\n=== Полиморфизм в действии ===");
       for (Employee emp : projectManager.getTeam()) {
         emp.work();
+
+          if (emp instanceof HRManager) {
+              ((HRManager) emp).conductInterview("New Junior Developer");
+          }
       }
 
       projectManager.assignTasks();
