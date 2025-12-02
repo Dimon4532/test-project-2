@@ -88,7 +88,7 @@ public class Main {
       companyDirectory.findByIdMap("id-manager");
 
 
-      new ReportGenerator().generateReports(100);
+      new ReportGenerator().generateReports(20);
 
       System.out.println("\n=== Запись данных в файл (try-with-resources) ===");
       try (EmployeeFileManager fileManager = new EmployeeFileManager("employees.txt")) {
