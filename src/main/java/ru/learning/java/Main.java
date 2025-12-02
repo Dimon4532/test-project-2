@@ -150,6 +150,7 @@ public class Main {
       devTeam.addParticipant(javaDev);
       devTeam.addParticipant(pythonDev);
 
+      //А эту строку лучше прикопать для демонстрации защиты команды от "неподходящих" типов
       // devTeam.addParticipant(manager);
 
       devTeam.playTeam();
