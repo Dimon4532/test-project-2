@@ -23,8 +23,4 @@ public class Team<T extends Employee> {
       participant.work();
     }
   }
-
-  public List<T> getParticipants() {
-    return participants;
-  }
 }
