@@ -15,7 +15,13 @@ import ru.learning.java.employees.TeamLead;
 import ru.learning.java.exceptions.InvalidEmployeeException;
 import ru.learning.java.exceptions.SalaryException;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 public class Main {
+
+  private static final Logger LOGGER = Logger.getLogger(Main.class.getName());
+
   public static void main(String[] args) {
     System.out.println("=== ОБНОВЛЕННЫЙ ПРОЕКТ С НОВЫМИ СОТРУДНИКАМИ ПРОЕКТА ===\n");
 
@@ -159,18 +165,14 @@ public class Main {
       } catch (InterruptedException e) {
         throw new RuntimeException(e);
       }
-
       System.out.println("\n=== Программа завершена успешно ===");
 
     } catch (SalaryException e) {
-      System.err.println("Ошибка зарплаты: " + e.getMessage());
-      e.printStackTrace();
+      LOGGER.log(Level.SEVERE, "Ошибка зарплаты: " + e.getMessage(), e);
     } catch (InvalidEmployeeException e) {
-      System.err.println("Ошибка данных сотрудника: " + e.getMessage());
-      e.printStackTrace();
+      LOGGER.log(Level.SEVERE, "Ошибка данных сотрудника: " + e.getMessage(), e);
     } catch (Exception e) {
-      System.err.println("Неожиданная ошибка: " + e.getMessage());
-      e.printStackTrace();
+      LOGGER.log(Level.SEVERE, "Неожиданная ошибка: " + e.getMessage(), e);
     }
   }
 }
