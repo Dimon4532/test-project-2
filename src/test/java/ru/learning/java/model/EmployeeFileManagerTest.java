@@ -1,4 +1,4 @@
-package ru.learning.java.employees;
+package ru.learning.java.model;
 
 import org.junit.jupiter.api.*;
 import ru.learning.java.exceptions.SalaryException;

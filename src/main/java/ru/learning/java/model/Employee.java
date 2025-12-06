@@ -1,4 +1,4 @@
-package ru.learning.java.employees;
+package ru.learning.java.model;
 
 import ru.learning.java.company.Department;
 import ru.learning.java.exceptions.SalaryException;
