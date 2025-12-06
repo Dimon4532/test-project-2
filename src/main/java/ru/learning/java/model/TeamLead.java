@@ -1,4 +1,4 @@
-package ru.learning.java.employees;
+package ru.learning.java.model;
 
 public class TeamLead extends Developer {
   private int teamSize = 0;

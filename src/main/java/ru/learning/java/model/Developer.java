@@ -1,4 +1,4 @@
-package ru.learning.java.employees;
+package ru.learning.java.model;
 
 public class Developer extends Employee {
   @Override

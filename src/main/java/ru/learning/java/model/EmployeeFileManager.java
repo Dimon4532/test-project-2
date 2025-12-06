@@ -1,4 +1,4 @@
-package ru.learning.java.employees;
+package ru.learning.java.model;
 
 import java.io.BufferedWriter;
 import java.io.FileWriter;

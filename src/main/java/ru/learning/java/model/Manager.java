@@ -1,4 +1,4 @@
-package ru.learning.java.employees;
+package ru.learning.java.model;
 
 import ru.learning.java.Trainable;
 import ru.learning.java.WriterDoc;

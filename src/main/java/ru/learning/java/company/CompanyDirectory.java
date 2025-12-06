@@ -1,6 +1,6 @@
 package ru.learning.java.company;
 
-import ru.learning.java.employees.Employee;
+import ru.learning.java.model.Employee;
 
 import java.util.*;
 

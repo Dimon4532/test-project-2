@@ -1,4 +1,4 @@
-package ru.learning.java.employees;
+package ru.learning.java.model;
 
 import ru.learning.java.exceptions.InvalidEmployeeException;
 import ru.learning.java.exceptions.SalaryException;
