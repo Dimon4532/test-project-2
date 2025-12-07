@@ -53,6 +53,44 @@ public class EmployeeRepository {
     }
   }
 
+    public void update(Employee updatedEmployee) {
+        List<Employee> allEmployees = getAllEmployees();
+        boolean found = false;
+
+        for (int i = 0; i < allEmployees.size(); i++) {
+            Employee current = allEmployees.get(i);
+
+            if (current.getId() != null && current.getId().equals(updatedEmployee.getId())) {
+                allEmployees.set(i, updatedEmployee);
+                found = true;
+                break;
+            }
+            else if (current.getName().equals(updatedEmployee.getName())) {
+                allEmployees.set(i, updatedEmployee);
+                found = true;
+                break;
+            }
+        }
+
+        if (!found) {
+            throw new RuntimeException("Сотрудник с ID " + updatedEmployee.getId() + " не найден");
+        }
+
+        rewriteFile(allEmployees);
+    }
+
+    private void rewriteFile(List<Employee> employees) {
+        try {
+            Files.write(filePath, new byte[0], StandardOpenOption.TRUNCATE_EXISTING);
+
+            for (Employee emp : employees) {
+                save(emp);
+            }
+        } catch (IOException e) {
+            throw new RuntimeException("Ошибка при обновлении базы данных", e);
+        }
+    }
+
   private String mapToString(Employee employee) {
     if (employee.getDepartment() == null) {
       throw new IllegalStateException("У сотрудника " + employee.getName() + " не установлен департамент!");
