@@ -96,7 +96,7 @@ public class EmployeeRepository {
       throw new IllegalStateException("У сотрудника " + employee.getName() + " не установлен департамент!");
     }
 
-    return String.format("%s,%s,%s",
+    return String.format("%s,%s,%s,%s",
       employee.getName(),
       employee.getDepartment().name(),
       employee.getSalary(),
@@ -106,7 +106,7 @@ public class EmployeeRepository {
   private Employee mapToEmployee(String line) {
     String[] parts = line.split(",");
 
-    if (parts.length < 3) {
+    if (parts.length < 4) {
       LOGGER.log(Level.WARNING, "Некорректный формат строки: {0}", line);
       return null; // Возвращаем null, чтобы потом отфильтровать
     }
@@ -114,6 +114,7 @@ public class EmployeeRepository {
     String name = parts[0].trim();
     String departmentStr = parts[1].trim();
     String salaryStr = parts[2].trim();
+    String Id = parts[3].trim();
 
     try {
       double salary = Double.parseDouble(salaryStr);
@@ -124,8 +125,9 @@ public class EmployeeRepository {
       employee.setName(name);
       employee.setDepartment(department);
       employee.setSalary(salary);
+      employee.setId(Id);
 
-      return employee;
+        return employee;
 
     } catch (NumberFormatException e) {
       LOGGER.log(Level.SEVERE, "Ошибка формата числа в строке: " + line, e);
