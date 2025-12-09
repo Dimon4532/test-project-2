@@ -9,28 +9,32 @@ public abstract class Employee {
   private String id;
   private Department department;
 
-    public void setId(String id) {
-        this.id = id;
-    }
+  public String getId() {
+    return id;
+  }
 
-    public String getId() {
-        return id;
-    }
+  public void setId(String id) {
+    this.id = id;
+  }
 
-    public Department getDepartment() {
-        return department;
-    }
+  public Department getDepartment() {
+    return department;
+  }
 
-    public void setDepartment(Department department) {
-        this.department = department;
-    }
-
-    public void setName(String name) {
-    this.name = name;
+  public void setDepartment(Department department) {
+    this.department = department;
   }
 
   public String getName() {
     return name;
+  }
+
+  public void setName(String name) {
+    this.name = name;
+  }
+
+  public double getSalary() {
+    return salary;
   }
 
   public void setSalary(double salary) throws SalaryException {
@@ -41,10 +45,6 @@ public abstract class Employee {
       throw new SalaryException("Зарплата слишком большая: " + salary);
     }
     this.salary = salary;
-  }
-
-  public double getSalary() {
-    return salary;
   }
 
   public void work() {

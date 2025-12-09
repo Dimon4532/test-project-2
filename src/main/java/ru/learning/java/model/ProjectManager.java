@@ -7,9 +7,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ProjectManager {
-  private final List<Employee> team;
   private static final double MAX_SALARY = 50000.0;
   private static final double MIN_SALARY = 0.0;
+  private final List<Employee> team;
 
   public ProjectManager() {
     this.team = new ArrayList<>();

@@ -3,7 +3,12 @@ package ru.learning.java.config;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 import ru.learning.java.company.Department;
-import ru.learning.java.model.*;
+import ru.learning.java.model.Designer;
+import ru.learning.java.model.Developer;
+import ru.learning.java.model.HRManager;
+import ru.learning.java.model.Manager;
+import ru.learning.java.model.QAEngineer;
+import ru.learning.java.model.TeamLead;
 import ru.learning.java.service.EmployeeService;
 
 import java.util.logging.Logger;
@@ -42,12 +47,12 @@ public class DataInitializer implements CommandLineRunner {
       developer.setDepartment(Department.DESIGN);
       employeeService.hireEmployee(developer);
 
-        Developer developerFlow = new Developer();
-        developerFlow.setName("DIM");
-        developerFlow.setSalary(5500);
-        developerFlow.setId("id-dev");
-        developerFlow.setDepartment(Department.FLOW);
-        employeeService.hireEmployee(developerFlow);
+      Developer developerFlow = new Developer();
+      developerFlow.setName("DIM");
+      developerFlow.setSalary(5500);
+      developerFlow.setId("id-dev");
+      developerFlow.setDepartment(Department.FLOW);
+      employeeService.hireEmployee(developerFlow);
 
       TeamLead teamLead = new TeamLead();
       teamLead.setName("Charlie");

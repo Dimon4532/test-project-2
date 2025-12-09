@@ -17,11 +17,11 @@ public class TeamLead extends Developer {
     System.out.println(getName() + " assigned task '" + task + "' to " + employee.getName());
   }
 
-  public void setTeamSize(int teamSize) {
-    this.teamSize = teamSize;
-  }
-
   public int getTeamSize() {
     return teamSize;
+  }
+
+  public void setTeamSize(int teamSize) {
+    this.teamSize = teamSize;
   }
 }

@@ -6,32 +6,32 @@ import java.util.concurrent.TimeUnit;
 
 public class ReportGenerator {
 
-    public void generateReports(int employeeCount) {
-        ExecutorService executor = Executors.newFixedThreadPool(4);
+  public void generateReports(int employeeCount) {
+    ExecutorService executor = Executors.newFixedThreadPool(4);
 
-        System.out.println("Начинаем генерацию отчетов...");
-        long start = System.currentTimeMillis();
+    System.out.println("Начинаем генерацию отчетов...");
+    long start = System.currentTimeMillis();
 
-        for (int i = 0; i < employeeCount; i++) {
-            final int empId = i;
-            executor.submit(() -> {
-                try {
-                    Thread.sleep(100);
-                    System.out.println("Отчет для сотрудника " + empId + " готов. Поток: " + Thread.currentThread().getName());
-                } catch (InterruptedException e) {
-                    Thread.currentThread().interrupt();
-                }
-            });
-        }
-
-        executor.shutdown();
+    for (int i = 0; i < employeeCount; i++) {
+      final int empId = i;
+      executor.submit(() -> {
         try {
-            executor.awaitTermination(1, TimeUnit.MINUTES);
+          Thread.sleep(100);
+          System.out.println("Отчет для сотрудника " + empId + " готов. Поток: " + Thread.currentThread().getName());
         } catch (InterruptedException e) {
-            e.printStackTrace();
+          Thread.currentThread().interrupt();
         }
-
-        long end = System.currentTimeMillis();
-        System.out.println("Всего времени: " + (end - start) + " мс");
+      });
     }
+
+    executor.shutdown();
+    try {
+      executor.awaitTermination(1, TimeUnit.MINUTES);
+    } catch (InterruptedException e) {
+      e.printStackTrace();
+    }
+
+    long end = System.currentTimeMillis();
+    System.out.println("Всего времени: " + (end - start) + " мс");
+  }
 }
