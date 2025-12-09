@@ -53,43 +53,42 @@ public class EmployeeRepository {
     }
   }
 
-    public void update(Employee updatedEmployee) {
-        List<Employee> allEmployees = getAllEmployees();
-        boolean found = false;
+  public void update(Employee updatedEmployee) {
+    List<Employee> allEmployees = getAllEmployees();
+    boolean found = false;
 
-        for (int i = 0; i < allEmployees.size(); i++) {
-            Employee current = allEmployees.get(i);
+    for (int i = 0; i < allEmployees.size(); i++) {
+      Employee current = allEmployees.get(i);
 
-            if (current.getId() != null && current.getId().equals(updatedEmployee.getId())) {
-                allEmployees.set(i, updatedEmployee);
-                found = true;
-                break;
-            }
-            else if (current.getName().equals(updatedEmployee.getName())) {
-                allEmployees.set(i, updatedEmployee);
-                found = true;
-                break;
-            }
-        }
-
-        if (!found) {
-            throw new RuntimeException("Сотрудник с ID " + updatedEmployee.getId() + " не найден");
-        }
-
-        rewriteFile(allEmployees);
+      if (current.getId() != null && current.getId().equals(updatedEmployee.getId())) {
+        allEmployees.set(i, updatedEmployee);
+        found = true;
+        break;
+      } else if (current.getName().equals(updatedEmployee.getName())) {
+        allEmployees.set(i, updatedEmployee);
+        found = true;
+        break;
+      }
     }
 
-    private void rewriteFile(List<Employee> employees) {
-        try {
-            Files.write(filePath, new byte[0], StandardOpenOption.TRUNCATE_EXISTING);
-
-            for (Employee emp : employees) {
-                save(emp);
-            }
-        } catch (IOException e) {
-            throw new RuntimeException("Ошибка при обновлении базы данных", e);
-        }
+    if (!found) {
+      throw new RuntimeException("Сотрудник с ID " + updatedEmployee.getId() + " не найден");
     }
+
+    rewriteFile(allEmployees);
+  }
+
+  private void rewriteFile(List<Employee> employees) {
+    try {
+      Files.write(filePath, new byte[0], StandardOpenOption.TRUNCATE_EXISTING);
+
+      for (Employee emp : employees) {
+        save(emp);
+      }
+    } catch (IOException e) {
+      throw new RuntimeException("Ошибка при обновлении базы данных", e);
+    }
+  }
 
   private String mapToString(Employee employee) {
     if (employee.getDepartment() == null) {
@@ -97,10 +96,11 @@ public class EmployeeRepository {
     }
 
     return String.format("%s,%s,%s,%s",
+      employee.getId(),
       employee.getName(),
       employee.getDepartment().name(),
-      employee.getSalary(),
-      employee.getId());
+      employee.getSalary()
+    );
   }
 
   private Employee mapToEmployee(String line) {
@@ -127,7 +127,7 @@ public class EmployeeRepository {
       employee.setSalary(salary);
       employee.setId(Id);
 
-        return employee;
+      return employee;
 
     } catch (NumberFormatException e) {
       LOGGER.log(Level.SEVERE, "Ошибка формата числа в строке: " + line, e);
