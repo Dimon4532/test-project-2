@@ -99,7 +99,8 @@ public class EmployeeRepository {
     return String.format("%s,%s,%s",
       employee.getName(),
       employee.getDepartment().name(),
-      employee.getSalary());
+      employee.getSalary(),
+      employee.getId());
   }
 
   private Employee mapToEmployee(String line) {
