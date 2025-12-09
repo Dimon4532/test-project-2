@@ -53,21 +53,60 @@ public class EmployeeRepository {
     }
   }
 
+    public void update(Employee updatedEmployee) {
+        List<Employee> allEmployees = getAllEmployees();
+        boolean found = false;
+
+        for (int i = 0; i < allEmployees.size(); i++) {
+            Employee current = allEmployees.get(i);
+
+            if (current.getId() != null && current.getId().equals(updatedEmployee.getId())) {
+                allEmployees.set(i, updatedEmployee);
+                found = true;
+                break;
+            }
+            else if (current.getName().equals(updatedEmployee.getName())) {
+                allEmployees.set(i, updatedEmployee);
+                found = true;
+                break;
+            }
+        }
+
+        if (!found) {
+            throw new RuntimeException("Сотрудник с ID " + updatedEmployee.getId() + " не найден");
+        }
+
+        rewriteFile(allEmployees);
+    }
+
+    private void rewriteFile(List<Employee> employees) {
+        try {
+            Files.write(filePath, new byte[0], StandardOpenOption.TRUNCATE_EXISTING);
+
+            for (Employee emp : employees) {
+                save(emp);
+            }
+        } catch (IOException e) {
+            throw new RuntimeException("Ошибка при обновлении базы данных", e);
+        }
+    }
+
   private String mapToString(Employee employee) {
     if (employee.getDepartment() == null) {
       throw new IllegalStateException("У сотрудника " + employee.getName() + " не установлен департамент!");
     }
 
-    return String.format("%s,%s,%s",
+    return String.format("%s,%s,%s,%s",
       employee.getName(),
       employee.getDepartment().name(),
-      employee.getSalary());
+      employee.getSalary(),
+      employee.getId());
   }
 
   private Employee mapToEmployee(String line) {
     String[] parts = line.split(",");
 
-    if (parts.length < 3) {
+    if (parts.length < 4) {
       LOGGER.log(Level.WARNING, "Некорректный формат строки: {0}", line);
       return null; // Возвращаем null, чтобы потом отфильтровать
     }
@@ -75,6 +114,7 @@ public class EmployeeRepository {
     String name = parts[0].trim();
     String departmentStr = parts[1].trim();
     String salaryStr = parts[2].trim();
+    String Id = parts[3].trim();
 
     try {
       double salary = Double.parseDouble(salaryStr);
@@ -85,8 +125,9 @@ public class EmployeeRepository {
       employee.setName(name);
       employee.setDepartment(department);
       employee.setSalary(salary);
+      employee.setId(Id);
 
-      return employee;
+        return employee;
 
     } catch (NumberFormatException e) {
       LOGGER.log(Level.SEVERE, "Ошибка формата числа в строке: " + line, e);

@@ -3,11 +3,13 @@ package ru.learning.java.service;
 import org.springframework.stereotype.Service;
 import ru.learning.java.company.BonusBudget;
 import ru.learning.java.exceptions.InvalidEmployeeException;
+import ru.learning.java.exceptions.SalaryException;
 import ru.learning.java.model.Employee;
 import ru.learning.java.model.HRManager;
 import ru.learning.java.repository.EmployeeRepository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class EmployeeService {
@@ -21,6 +23,29 @@ public class EmployeeService {
   public List<Employee> findAll() {
     return repository.getAllEmployees();
   }
+
+    /**
+     * Изменяет зарплату сотрудника по его ID.
+     * @param id ID сотрудника
+     * @param newSalary новая зарплата
+     */
+    public void changeSalary(String id, double newSalary) throws SalaryException {
+        List<Employee> all = repository.getAllEmployees();
+
+        Optional<Employee> employeeOpt = all.stream()
+                .filter(e -> e.getId() != null && e.getId().equals(id))
+                .findFirst();
+
+        if (employeeOpt.isEmpty()) {
+            throw new RuntimeException("Сотрудник с ID " + id + " не найден");
+        }
+
+        Employee employee = employeeOpt.get();
+
+        employee.setSalary(newSalary);
+
+        repository.update(employee);
+    }
 
   /**
    * Нанимает сотрудника.
