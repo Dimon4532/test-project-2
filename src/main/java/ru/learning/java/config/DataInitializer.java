@@ -42,6 +42,13 @@ public class DataInitializer implements CommandLineRunner {
       developer.setDepartment(Department.DESIGN);
       employeeService.hireEmployee(developer);
 
+        Developer developerFlow = new Developer();
+        developerFlow.setName("DIM");
+        developerFlow.setSalary(5500);
+        developerFlow.setId("id-dev");
+        developerFlow.setDepartment(Department.FLOW);
+        employeeService.hireEmployee(developerFlow);
+
       TeamLead teamLead = new TeamLead();
       teamLead.setName("Charlie");
       teamLead.setSalary(6000);

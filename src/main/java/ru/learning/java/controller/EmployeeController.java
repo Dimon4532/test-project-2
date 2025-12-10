@@ -1,5 +1,7 @@
 package ru.learning.java.controller;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.learning.java.exceptions.InvalidEmployeeException;
 import ru.learning.java.exceptions.SalaryException;
@@ -49,14 +51,17 @@ public class EmployeeController {
   }
 
     @PutMapping("/{id}/salary")
-    public String updateSalary(@PathVariable String id, @RequestParam double newSalary) {
+    public ResponseEntity<String> updateSalary(@PathVariable String id, @RequestParam double newSalary) {
         try {
             service.changeSalary(id, newSalary);
-            return "Зарплата сотрудника " + id + " успешно обновлена на " + newSalary;
+            return ResponseEntity.ok("Зарплата сотрудника " + id + " успешно обновлена на " + newSalary);
         } catch (SalaryException e) {
-            throw new RuntimeException("Ошибка валидации зарплаты: " + e.getMessage());
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Ошибка валидации зарплаты: " + e.getMessage());
         } catch (RuntimeException e) {
-            throw new RuntimeException(e.getMessage());
+            if (e.getMessage().contains("не найден")) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+            }
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Внутренняя ошибка: " + e.getMessage());
         }
     }
 }
