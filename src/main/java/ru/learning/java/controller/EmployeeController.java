@@ -24,9 +24,9 @@ import java.util.List;
 public class EmployeeController {
 
   private final EmployeeService service;
-  private EmployeeEventProducer producer;
+  private final EmployeeEventProducer producer;
 
-  public EmployeeController(EmployeeService service) {
+  public EmployeeController(EmployeeService service, EmployeeEventProducer producer) {
     this.service = service;
     this.producer = producer;
   }
