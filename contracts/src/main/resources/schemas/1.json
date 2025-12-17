@@ -1,0 +1,8 @@
+{
+  "eventId": "3fc512ad-86fc-4a6c-a5be-acc97944537e",
+  "createdAt": "2025-01-01T00:00:00.000Z",
+  "payload": {
+    "nameEmployee": "Dima",
+    "department": "Flow"
+  }
+}
