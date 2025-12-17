@@ -5,7 +5,9 @@ WORKDIR /app
 COPY pom.xml .
 COPY contracts ./contracts
 COPY producer-service ./producer-service
+COPY validator-service ./validator-service
 
+# Собираем только нужные модули
 RUN mvn clean install -pl contracts -am -DskipTests
 RUN mvn clean package -pl producer-service -am -DskipTests
 
@@ -16,4 +18,5 @@ WORKDIR /app
 COPY --from=build /app/producer-service/target/producer-service-1.0-SNAPSHOT.jar app.jar
 EXPOSE 8080
 
+# Команда запуска
 ENTRYPOINT ["java", "-jar", "app.jar"]
