@@ -1,4 +1,4 @@
-package ru.learning.java.listener;
+/*package ru.learning.java.listener;
 
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Component;
@@ -14,3 +14,4 @@ public class MessageListener {
         System.out.println("Received message: " + message);
     }
 }
+*/
