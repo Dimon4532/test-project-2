@@ -28,6 +28,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <!-- JsonSchemaValidator -->
         <networknt.jsonschema.version>1.5.4</networknt.jsonschema.version>
+        <spring-boot-dependencies.version>3.5.3</spring-boot-dependencies.version>
     </properties>
 
     <dependencyManagement>
@@ -35,14 +36,9 @@
             <dependency>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-dependencies</artifactId>
+                <version>${spring-boot-dependencies.version}</version>
                 <type>pom</type>
                 <scope>import</scope>
-            </dependency>
-
-            <dependency>
-                <groupId>com.networknt</groupId>
-                <artifactId>json-schema-validator</artifactId>
-                <version>${networknt.jsonschema.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

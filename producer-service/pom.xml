@@ -31,6 +31,12 @@
             <groupId>org.springframework.kafka</groupId>
             <artifactId>spring-kafka</artifactId>
         </dependency>
+        <!-- Contracts Module -->
+        <dependency>
+            <groupId>ru.learning.java</groupId>
+            <artifactId>contracts</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
         <!-- JUnit -->
         <dependency>
             <groupId>org.junit.jupiter</groupId>

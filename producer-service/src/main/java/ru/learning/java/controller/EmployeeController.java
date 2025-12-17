@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.RestController;
 import ru.learning.java.exceptions.InvalidEmployeeException;
 import ru.learning.java.exceptions.SalaryException;
 import ru.learning.java.model.Employee;
-import ru.learning.java.model.EmployeeEvent;
 import ru.learning.java.service.EmployeeEventProducer;
 import ru.learning.java.service.EmployeeService;
 
@@ -40,7 +39,7 @@ public class EmployeeController {
   public void create(@RequestBody Employee employee) {
     try {
       service.hireEmployee(employee);
-      producer.sendEvent(new EmployeeEvent(employee.getName(), "HIRED"));
+      producer.sendEvent(employee);
     } catch (InvalidEmployeeException e) {
       throw new RuntimeException(e);
     }

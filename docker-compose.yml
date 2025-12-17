@@ -1,0 +1,60 @@
+version: '3.8'
+
+services:
+  # Kafka брокер
+  kafka:
+    image: confluentinc/cp-kafka:7.4.0
+    container_name: kafka
+    ports:
+      - "9092:9092"
+    environment:
+      KAFKA_NODE_ID: 1
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: CONTROLLER:PLAINTEXT,PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:29092,PLAINTEXT_HOST://localhost:9092
+      KAFKA_LISTENERS: PLAINTEXT://kafka:29092,CONTROLLER://kafka:29093,PLAINTEXT_HOST://0.0.0.0:9092
+      KAFKA_PROCESS_ROLES: broker,controller
+      KAFKA_CONTROLLER_QUORUM_VOTERS: 1@kafka:29093
+      KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
+      KAFKA_CONTROLLER_LISTENER_NAMES: CONTROLLER
+      CLUSTER_ID: 'MkU3OEVBNTcwNTJENDM2Qk'
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 0
+    healthcheck:
+      test: ["CMD", "kafka-broker-api-versions", "--bootstrap-server", "localhost:9092"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # Producer Service
+  producer-service:
+    build:
+      context: .
+      dockerfile: producer-service/Dockerfile
+    container_name: producer-service
+    ports:
+      - "8080:8080"
+    environment:
+      - SPRING_KAFKA_BOOTSTRAP_SERVERS=kafka:29092
+    depends_on:
+      kafka:
+        condition: service_healthy
+    restart: on-failure
+
+  # Validator Service
+  validator-service:
+    build:
+      context: .
+      dockerfile: validator-service/Dockerfile
+    container_name: validator-service
+    environment:
+      - SPRING_KAFKA_BOOTSTRAP_SERVERS=kafka:29092
+    depends_on:
+      kafka:
+        condition: service_healthy
+      producer-service:
+        condition: service_started
+    restart: on-failure
+
+networks:
+  default:
+    name: kafka-network

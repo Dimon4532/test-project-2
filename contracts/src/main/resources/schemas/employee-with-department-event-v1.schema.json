@@ -1,0 +1,36 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.local/schemas/employee-with-department-event-v1.json",
+  "title": "EmployeeWithDepartmentEvent v1",
+  "type": "object",
+  "required": ["eventId", "createdAt", "payload"],
+  "properties": {
+    "eventId": { "type": "string", "format": "uuid" },
+    "createdAt": { "type": "string", "format": "date-time" },
+    "payload": {
+      "type": "object",
+      "required": ["nameEmployee", "department"],
+      "properties": {
+        "nameEmployee": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "^(?!\\s*$)"
+        },
+        "department": {
+          "type": "string",
+          "minLength": 1,
+          "enum": [
+            "IT",
+            "HR",
+            "FLOW",
+            "SALES",
+            "ENGINE",
+            "DESIGN"
+          ]
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}

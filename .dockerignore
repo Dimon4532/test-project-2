@@ -1,0 +1,8 @@
+.git
+.idea
+.PVS-Studio
+**/target/
+**/*.iml
+.gitignore
+**/node_modules
+**/.DS_Store
