@@ -29,6 +29,8 @@
         <!-- JsonSchemaValidator -->
         <networknt.jsonschema.version>1.5.4</networknt.jsonschema.version>
         <spring-boot-dependencies.version>3.5.3</spring-boot-dependencies.version>
+        <!-- Testcontainers -->
+        <testcontainers.version>1.20.4</testcontainers.version>
     </properties>
 
     <dependencyManagement>
@@ -45,6 +47,14 @@
                 <groupId>com.networknt</groupId>
                 <artifactId>json-schema-validator</artifactId>
                 <version>${networknt.jsonschema.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.testcontainers</groupId>
+                <artifactId>testcontainers-bom</artifactId>
+                <version>${testcontainers.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
             </dependency>
         </dependencies>
     </dependencyManagement>

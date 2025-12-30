@@ -14,7 +14,7 @@ spring:
 
 logging:
   level:
-    ru.learning.java.validator: DEBUG
+    ru.learning.java.validator: INFO
     org.springframework.kafka: ERROR
     org.apache.kafka: ERROR
-    kafka.server: ERROR
+    kafka: ERROR
