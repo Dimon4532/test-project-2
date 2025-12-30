@@ -27,16 +27,16 @@ public class EmployeeEventValidatorListener {
   }
 
   @KafkaListener(
-    topics = Topics.EMPLOYEE_RAW,
-    groupId = "validator-service-group",
-    containerFactory = "kafkaListenerContainerFactory"
+          topics = Topics.EMPLOYEE_RAW,
+          groupId = "validator-service-group",
+          containerFactory = "kafkaListenerContainerFactory"
   )
   public void listen(ConsumerRecord<String, String> record) {
     String message = record.value();
     String key = record.key();
 
     log.info("Получено сообщение из топика {}: key={}, value={}",
-      record.topic(), key, message);
+            record.topic(), key, message);
 
     JsonSchemaValidator.ValidationResult result = validator.validate(message);
 
@@ -46,11 +46,11 @@ public class EmployeeEventValidatorListener {
     } else {
       log.warn("Сообщение НЕ валидно: {}. Отправляем в DLQ", result.getErrorMessage());
       String dlqMessage = dlqMessageFactory.createDlqMessage(
-        message,
-        result.getErrorMessage(),
-        record.topic(),
-        record.partition(),
-        record.offset()
+              message,
+              result.getErrorMessage(),
+              record.topic(),
+              record.partition(),
+              record.offset()
       );
       kafkaTemplate.send(Topics.EMPLOYEE_DLQ, key, dlqMessage);
     }

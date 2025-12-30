@@ -9,6 +9,9 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.kafka.config.ConcurrentKafkaListenerContainerFactory;
 import org.springframework.kafka.core.*;
+import org.springframework.kafka.listener.DefaultErrorHandler;
+import org.springframework.kafka.support.ExponentialBackOffWithMaxRetries;
+import ru.learning.java.kafka.Topics;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -31,10 +34,31 @@ public class KafkaConfig {
   }
 
   @Bean
-  public ConcurrentKafkaListenerContainerFactory<String, String> kafkaListenerContainerFactory() {
+  public DefaultErrorHandler errorHandler(KafkaTemplate<String, String> kafkaTemplate) {
+    // Создаем DLQ recoverer - он отправит сообщение в DLQ после всех retry
+    var recoverer = new org.springframework.kafka.listener.DeadLetterPublishingRecoverer(
+            kafkaTemplate,
+            (record, ex) -> new org.apache.kafka.common.TopicPartition(Topics.EMPLOYEE_DLQ, -1)
+    );
+
+    // Настраиваем retry: 3 попытки с экспоненциальной задержкой (2 сек, 4 сек, 8 сек)
+    var backOff = new ExponentialBackOffWithMaxRetries(3);
+    backOff.setInitialInterval(2000L);
+    backOff.setMultiplier(2.0);
+    backOff.setMaxInterval(10000L);
+
+    return new DefaultErrorHandler(recoverer, backOff);
+  }
+
+  @Bean
+  public ConcurrentKafkaListenerContainerFactory<String, String> kafkaListenerContainerFactory(
+          ConsumerFactory<String, String> consumerFactory,
+          DefaultErrorHandler errorHandler
+  ) {
     ConcurrentKafkaListenerContainerFactory<String, String> factory =
-      new ConcurrentKafkaListenerContainerFactory<>();
-    factory.setConsumerFactory(consumerFactory());
+            new ConcurrentKafkaListenerContainerFactory<>();
+    factory.setConsumerFactory(consumerFactory);
+    factory.setCommonErrorHandler(errorHandler);
     return factory;
   }
 
