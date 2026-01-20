@@ -1,5 +1,10 @@
 package ru.learning.java.model;
 
+import jakarta.persistence.DiscriminatorValue;
+import jakarta.persistence.Entity;
+
+@Entity
+@DiscriminatorValue("QA_ENGINEER")
 public class QAEngineer extends Employee {
   private int bugsFound = 0;
 

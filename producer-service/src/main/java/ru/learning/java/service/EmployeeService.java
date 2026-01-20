@@ -31,20 +31,8 @@ public class EmployeeService {
    * @param newSalary новая зарплата
    */
   public void changeSalary(String id, double newSalary) throws SalaryException {
-    List<Employee> all = repository.getAllEmployees();
-
-    Optional<Employee> employeeOpt = all.stream()
-      .filter(e -> e.getId() != null && e.getId().equals(id))
-      .findFirst();
-
-    if (employeeOpt.isEmpty()) {
-      throw new RuntimeException("Сотрудник с ID " + id + " не найден");
-    }
-
-    Employee employee = employeeOpt.get();
-
+    Employee employee = repository.findById(id);
     employee.setSalary(newSalary);
-
     repository.update(employee);
   }
 

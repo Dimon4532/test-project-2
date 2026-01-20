@@ -2,8 +2,11 @@ package ru.learning.java.model;
 
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import jakarta.persistence.*;
 import ru.learning.java.company.Department;
 import ru.learning.java.exceptions.SalaryException;
+
+import java.time.LocalDateTime;
 
 
 @JsonTypeInfo(
@@ -20,11 +23,42 @@ import ru.learning.java.exceptions.SalaryException;
   @JsonSubTypes.Type(value = TeamLead.class, name = "teamLead"),
 
 })
+@Entity
+@Table(name = "employees")
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name = "employee_type", discriminatorType = DiscriminatorType.STRING)
 public abstract class Employee {
-  private String name;
-  private double salary;
+
+  @Id
+  @Column(name = "id", nullable = false)
   private String id;
+
+  @Column(name = "name", nullable = false)
+  private String name;
+
+  @Column(name = "salary", nullable = false)
+  private double salary;
+
+  @Enumerated(EnumType.STRING)
+  @Column(name = "department", nullable = false)
   private Department department;
+
+  @Column(name = "created_at", updatable = false)
+  private LocalDateTime createdAt;
+
+  @Column(name = "updated_at")
+  private LocalDateTime updatedAt;
+
+  @PrePersist
+  protected void onCreate() {
+    createdAt = LocalDateTime.now();
+    updatedAt = LocalDateTime.now();
+  }
+
+  @PreUpdate
+  protected void onUpdate() {
+    updatedAt = LocalDateTime.now();
+  }
 
   public String getId() {
     return id;
@@ -62,6 +96,22 @@ public abstract class Employee {
       throw new SalaryException("Зарплата слишком большая: " + salary);
     }
     this.salary = salary;
+  }
+
+  public LocalDateTime getCreatedAt() {
+    return createdAt;
+  }
+
+  public void setCreatedAt(LocalDateTime createdAt) {
+    this.createdAt = createdAt;
+  }
+
+  public LocalDateTime getUpdatedAt() {
+    return updatedAt;
+  }
+
+  public void setUpdatedAt(LocalDateTime updatedAt) {
+    this.updatedAt = updatedAt;
   }
 
   public void work() {

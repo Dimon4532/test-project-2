@@ -2,17 +2,27 @@ package ru.learning.java.service;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 import ru.learning.java.company.Department;
 import ru.learning.java.exceptions.InvalidEmployeeException;
 import ru.learning.java.exceptions.SalaryException;
 import ru.learning.java.model.Developer;
 import ru.learning.java.model.Employee;
 import ru.learning.java.model.Manager;
+import ru.learning.java.repository.EmployeeJpaRepository;
 import ru.learning.java.repository.EmployeeRepository;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.doNothing;
 
+@ExtendWith(MockitoExtension.class)
 public class EmployeeValidationTest {
+
+  @Mock
+  private EmployeeJpaRepository jpaRepository;
 
   @Test
   @DisplayName("setSalary должен выбрасывать SalaryException при отрицательном значении")
@@ -45,13 +55,11 @@ public class EmployeeValidationTest {
   @Test
   @DisplayName("hireEmployee должен выбрасывать InvalidEmployeeException, если имя пустое")
   void shouldThrowInvalidEmployeeException_WhenNameIsEmpty() {
-    EmployeeRepository stubRepo = new EmployeeRepository() {
-      @Override
-      public void save(Employee employee) {
-      }
-    };
+    doNothing().when(jpaRepository).save(any(Employee.class));
 
-    EmployeeService service = new EmployeeService(stubRepo);
+    // Создаем настоящий репозиторий с замоканной JPA-зависимостью
+    EmployeeRepository repository = new EmployeeRepository(jpaRepository);
+    EmployeeService service = new EmployeeService(repository);
 
     Employee unnamedEmployee = new Developer();
     unnamedEmployee.setName("");

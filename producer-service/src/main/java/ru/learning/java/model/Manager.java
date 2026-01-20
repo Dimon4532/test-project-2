@@ -1,8 +1,12 @@
 package ru.learning.java.model;
 
+import jakarta.persistence.DiscriminatorValue;
+import jakarta.persistence.Entity;
 import ru.learning.java.Trainable;
 import ru.learning.java.WriterDoc;
 
+@Entity
+@DiscriminatorValue("MANAGER")
 public final class Manager extends Employee implements Trainable, WriterDoc {
   private int trainingHours = 0;
 

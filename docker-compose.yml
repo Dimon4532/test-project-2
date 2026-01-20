@@ -25,6 +25,20 @@ services:
       timeout: 5s
       retries: 5
 
+  postgres:
+    image: postgres:16-alpine
+    container_name: employeedb
+    environment:
+      POSTGRES_DB: employeedb
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - default-network
+
   # Producer Service
   producer-service:
     build:
@@ -51,10 +65,12 @@ services:
     depends_on:
       kafka:
         condition: service_healthy
+      postgres:
+        condition: service_started
       producer-service:
         condition: service_started
     restart: on-failure
 
 networks:
   default:
-    name: kafka-network
+    name: default-network
