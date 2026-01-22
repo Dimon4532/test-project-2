@@ -8,7 +8,6 @@ import ru.learning.java.exceptions.SalaryException;
 
 import java.time.LocalDateTime;
 
-
 @JsonTypeInfo(
   use = JsonTypeInfo.Id.NAME,
   include = JsonTypeInfo.As.PROPERTY,
@@ -20,8 +19,7 @@ import java.time.LocalDateTime;
   @JsonSubTypes.Type(value = HRManager.class, name = "hr"),
   @JsonSubTypes.Type(value = ProjectManager.class, name = "projectManager"),
   @JsonSubTypes.Type(value = QAEngineer.class, name = "qa"),
-  @JsonSubTypes.Type(value = TeamLead.class, name = "teamLead"),
-
+  @JsonSubTypes.Type(value = TeamLead.class, name = "teamLead")
 })
 @Entity
 @Table(name = "employees")

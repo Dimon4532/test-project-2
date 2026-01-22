@@ -15,6 +15,7 @@ import ru.learning.java.repository.EmployeeJpaRepository;
 import ru.learning.java.repository.EmployeeRepository;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.mock;
 
 @ExtendWith(MockitoExtension.class)
 public class EmployeeValidationTest {
@@ -54,7 +55,8 @@ public class EmployeeValidationTest {
   @DisplayName("hireEmployee должен выбрасывать InvalidEmployeeException, если имя пустое")
   void shouldThrowInvalidEmployeeException_WhenNameIsEmpty() {
     EmployeeRepository repository = new EmployeeRepository(jpaRepository);
-    EmployeeService service = new EmployeeService(repository);
+    EmployeeSearchService searchService = mock(EmployeeSearchService.class);
+    EmployeeService service = new EmployeeService(repository, searchService);
 
     Employee unnamedEmployee = new Developer();
     unnamedEmployee.setName("");

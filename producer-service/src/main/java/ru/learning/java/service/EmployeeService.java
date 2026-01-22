@@ -14,9 +14,11 @@ import java.util.List;
 public class EmployeeService {
 
   private final EmployeeRepository repository;
+  private final EmployeeSearchService searchService;
 
-  public EmployeeService(EmployeeRepository repository) {
+  public EmployeeService(EmployeeRepository repository, EmployeeSearchService searchService) {
     this.repository = repository;
+    this.searchService = searchService;
   }
 
   public List<Employee> findAll() {
@@ -33,6 +35,9 @@ public class EmployeeService {
     Employee employee = repository.findById(id);
     employee.setSalary(newSalary);
     repository.update(employee);
+
+    // Обновляем в Elasticsearch
+    searchService.indexEmployee(employee);
   }
 
   /**
@@ -53,6 +58,9 @@ public class EmployeeService {
     }
 
     repository.save(employee);
+
+    // Индексируем в Elasticsearch
+    searchService.indexEmployee(employee);
   }
 
   // Логика "Полиморфизм в действии"
@@ -83,5 +91,13 @@ public class EmployeeService {
       Thread.currentThread().interrupt();
       throw new RuntimeException(e);
     }
+  }
+
+  /**
+   * Переиндексация всех сотрудников в Elasticsearch
+   */
+  public void reindexAllEmployees() {
+    List<Employee> allEmployees = repository.getAllEmployees();
+    searchService.reindexAll(allEmployees);
   }
 }
