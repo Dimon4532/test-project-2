@@ -2,20 +2,11 @@ package ru.learning.java.repository;
 
 import org.springframework.stereotype.Repository;
 import ru.learning.java.company.Department;
-import ru.learning.java.exceptions.SalaryException;
 import ru.learning.java.model.Employee;
 
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.nio.file.StandardOpenOption;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.util.stream.Collectors;
 
 @Repository
 public class EmployeeRepository {

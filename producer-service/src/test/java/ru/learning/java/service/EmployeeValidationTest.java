@@ -15,8 +15,6 @@ import ru.learning.java.repository.EmployeeJpaRepository;
 import ru.learning.java.repository.EmployeeRepository;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.doNothing;
 
 @ExtendWith(MockitoExtension.class)
 public class EmployeeValidationTest {
@@ -55,9 +53,6 @@ public class EmployeeValidationTest {
   @Test
   @DisplayName("hireEmployee должен выбрасывать InvalidEmployeeException, если имя пустое")
   void shouldThrowInvalidEmployeeException_WhenNameIsEmpty() {
-    doNothing().when(jpaRepository).save(any(Employee.class));
-
-    // Создаем настоящий репозиторий с замоканной JPA-зависимостью
     EmployeeRepository repository = new EmployeeRepository(jpaRepository);
     EmployeeService service = new EmployeeService(repository);
 

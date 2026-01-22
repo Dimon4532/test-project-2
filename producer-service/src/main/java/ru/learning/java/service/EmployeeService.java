@@ -9,7 +9,6 @@ import ru.learning.java.model.HRManager;
 import ru.learning.java.repository.EmployeeRepository;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class EmployeeService {
