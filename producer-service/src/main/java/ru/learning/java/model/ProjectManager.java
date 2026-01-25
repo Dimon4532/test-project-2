@@ -3,12 +3,14 @@ package ru.learning.java.model;
 import ru.learning.java.exceptions.InvalidEmployeeException;
 import ru.learning.java.exceptions.SalaryException;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.List;
 
 public class ProjectManager {
-  private static final double MAX_SALARY = 50000.0;
-  private static final double MIN_SALARY = 0.0;
+  private static final BigDecimal MAX_SALARY = new BigDecimal("50000.0");
+  private static final BigDecimal MIN_SALARY = BigDecimal.ZERO;
   private final List<Employee> team;
 
   public ProjectManager() {
@@ -30,12 +32,12 @@ public class ProjectManager {
       throw new InvalidEmployeeException("Имя сотрудника не может быть пустым");
     }
 
-    double salary = employee.getSalary();
-    if (salary < MIN_SALARY) {
+    BigDecimal salary = employee.getSalary();
+    if (salary.compareTo(MIN_SALARY) < 0) {
       throw new SalaryException("Зарплата не может быть отрицательной: " + salary);
     }
 
-    if (salary > MAX_SALARY) {
+    if (salary.compareTo(MAX_SALARY) > 0) {
       throw new SalaryException("Зарплата слишком большая: " + salary + ". Максимум: " + MAX_SALARY);
     }
   }
@@ -89,15 +91,15 @@ public class ProjectManager {
     }
   }
 
-  public double calculateTotalBudget() {
+  public BigDecimal calculateTotalBudget() {
     System.out.println("\n=== Расчёт бюджета проекта ===");
 
-    double totalBudget = 0.0;
+    BigDecimal totalBudget = BigDecimal.ZERO;
     int employeeCount = 0;
 
     for (Employee emp : team) {
-      double salary = emp.getSalary();
-      totalBudget += salary;
+      BigDecimal salary = emp.getSalary();
+      totalBudget = totalBudget.add(salary);
       employeeCount++;
       System.out.println(emp.getName() + " - зарплата: " + salary);
     }
@@ -108,20 +110,24 @@ public class ProjectManager {
     return totalBudget;
   }
 
-  public double calculateAverageSalary() {
+  public BigDecimal calculateAverageSalary() {
     if (team.isEmpty()) {
-      return 0.0;
+      return BigDecimal.ZERO;
     }
 
-    double totalSalary = 0.0;
+    BigDecimal totalSalary = BigDecimal.ZERO;
     int index = 0;
 
     while (index < team.size()) {
-      totalSalary += team.get(index).getSalary();
+      totalSalary = totalSalary.add(team.get(index).getSalary());
       index++;
     }
 
-    double average = totalSalary / team.size();
+    BigDecimal average = totalSalary.divide(
+            BigDecimal.valueOf(team.size()),
+            2,
+            RoundingMode.HALF_UP
+    );
     System.out.println("Средняя зарплата в команде: " + average);
     return average;
   }
@@ -143,7 +149,7 @@ public class ProjectManager {
     if (found) {
       System.out.println("Сотрудник " + employeeName + " найден в команде.");
 
-      if (foundEmployee.getSalary() > 0) {
+      if (foundEmployee.getSalary().compareTo(BigDecimal.ZERO) > 0) {
         System.out.println("Статус: Активный сотрудник");
 
         if (foundEmployee instanceof TeamLead) {
@@ -168,7 +174,7 @@ public class ProjectManager {
     int unavailableCount = 0;
 
     for (Employee emp : team) {
-      if (emp.getSalary() > 0 && emp.getName() != null && !emp.getName().isEmpty()) {
+      if (emp.getSalary().compareTo(BigDecimal.ZERO) > 0 && emp.getName() != null && !emp.getName().isEmpty()) {
         System.out.println("✓ " + emp.getName() + " - Доступен");
         availableCount++;
       } else {

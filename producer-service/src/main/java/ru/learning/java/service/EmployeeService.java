@@ -8,6 +8,8 @@ import ru.learning.java.model.Employee;
 import ru.learning.java.model.HRManager;
 import ru.learning.java.repository.EmployeeRepository;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.List;
 
 @Service
@@ -31,12 +33,11 @@ public class EmployeeService {
    * @param id        ID сотрудника
    * @param newSalary новая зарплата
    */
-  public void changeSalary(String id, double newSalary) throws SalaryException {
+  public void changeSalary(String id, BigDecimal newSalary) throws SalaryException {
     Employee employee = repository.findById(id);
     employee.setSalary(newSalary);
     repository.update(employee);
 
-    // Обновляем в Elasticsearch
     searchService.indexEmployee(employee);
   }
 
@@ -53,7 +54,7 @@ public class EmployeeService {
     }
 
     // Валидация зарплаты (на всякий случай, хотя сеттер модели тоже проверяет)
-    if (employee.getSalary() < 0) {
+    if (employee.getSalary() != null && employee.getSalary().compareTo(BigDecimal.ZERO) < 0) {
       throw new IllegalArgumentException("Зарплата не может быть отрицательной");
     }
 
@@ -75,12 +76,15 @@ public class EmployeeService {
   }
 
   // Логика calculateAverageSalary из ProjectManager
-  public double calculateAverageSalary() {
+  public BigDecimal calculateAverageSalary() {
     List<Employee> team = repository.getAllEmployees();
-    if (team.isEmpty()) return 0;
+    if (team.isEmpty()) return BigDecimal.ZERO;
 
-    double total = team.stream().mapToDouble(Employee::getSalary).sum();
-    return total / team.size();
+    BigDecimal total = team.stream()
+            .map(Employee::getSalary)
+            .reduce(BigDecimal.ZERO, BigDecimal::add);
+
+    return total.divide(BigDecimal.valueOf(team.size()), 2, RoundingMode.HALF_UP);
   }
 
   // Демонстрация потокобезопасности

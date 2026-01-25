@@ -6,6 +6,8 @@ import org.springframework.data.elasticsearch.annotations.Field;
 import org.springframework.data.elasticsearch.annotations.FieldType;
 import ru.learning.java.company.Department;
 
+import java.math.BigDecimal;
+
 
 @Document(indexName = "employees")
 public class EmployeeDocument {
@@ -17,7 +19,7 @@ public class EmployeeDocument {
     private String name;
 
     @Field(type = FieldType.Double)
-    private double salary;
+    private BigDecimal salary;
 
     @Field(type = FieldType.Keyword)
     private Department department;
@@ -25,32 +27,26 @@ public class EmployeeDocument {
     @Field(type = FieldType.Keyword)
     private String employeeType;
 
-    @Field(type = FieldType.Integer)
-    private Integer teamSize;
-
     // Конструкторы
     public EmployeeDocument() {}
 
-    public EmployeeDocument(String id, String name, double salary, Department department, String employeeType, Integer teamSize) {
+    public EmployeeDocument(String id, String name, BigDecimal salary, Department department, String employeeType) {
         this.id = id;
         this.name = name;
         this.salary = salary;
         this.department = department;
         this.employeeType = employeeType;
-        this.teamSize = teamSize;
     }
 
     public static EmployeeDocument fromEntity(Employee employee) {
         String employeeType = employee.getClass().getSimpleName();
-        Integer teamSize = employee instanceof TeamLead ? ((TeamLead) employee).getTeamSize() : null;
 
         return new EmployeeDocument(
                 employee.getId(),
                 employee.getName(),
                 employee.getSalary(),
                 employee.getDepartment(),
-                employeeType,
-                teamSize
+                employeeType
         );
     }
 
@@ -71,11 +67,11 @@ public class EmployeeDocument {
         this.name = name;
     }
 
-    public double getSalary() {
+    public BigDecimal getSalary() {
         return salary;
     }
 
-    public void setSalary(double salary) {
+    public void setSalary(BigDecimal salary) {
         this.salary = salary;
     }
 
@@ -93,13 +89,5 @@ public class EmployeeDocument {
 
     public void setEmployeeType(String employeeType) {
         this.employeeType = employeeType;
-    }
-
-    public Integer getTeamSize() {
-        return teamSize;
-    }
-
-    public void setTeamSize(Integer teamSize) {
-        this.teamSize = teamSize;
     }
 }

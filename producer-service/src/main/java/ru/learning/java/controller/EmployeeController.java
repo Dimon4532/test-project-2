@@ -16,6 +16,7 @@ import ru.learning.java.model.Employee;
 import ru.learning.java.service.EmployeeEventProducer;
 import ru.learning.java.service.EmployeeService;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @RestController
@@ -46,7 +47,7 @@ public class EmployeeController {
   }
 
   @GetMapping("/average-salary")
-  public double getAverageSalary() {
+  public BigDecimal getAverageSalary() {
     return service.calculateAverageSalary();
   }
 
@@ -63,7 +64,7 @@ public class EmployeeController {
   }
 
   @PutMapping("/{id}/salary")
-  public ResponseEntity<String> updateSalary(@PathVariable String id, @RequestParam double newSalary) {
+  public ResponseEntity<String> updateSalary(@PathVariable String id, @RequestParam BigDecimal newSalary) {
     try {
       service.changeSalary(id, newSalary);
       return ResponseEntity.ok("Зарплата сотрудника " + id + " успешно обновлена на " + newSalary);

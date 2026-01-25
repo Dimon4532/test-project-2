@@ -6,6 +6,7 @@ import jakarta.persistence.*;
 import ru.learning.java.company.Department;
 import ru.learning.java.exceptions.SalaryException;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @JsonTypeInfo(
@@ -14,12 +15,13 @@ import java.time.LocalDateTime;
   property = "type"
 )
 @JsonSubTypes({
-  @JsonSubTypes.Type(value = Developer.class, name = "developer"),
-  @JsonSubTypes.Type(value = Manager.class, name = "manager"),
-  @JsonSubTypes.Type(value = HRManager.class, name = "hr"),
-  @JsonSubTypes.Type(value = ProjectManager.class, name = "projectManager"),
-  @JsonSubTypes.Type(value = QAEngineer.class, name = "qa"),
-  @JsonSubTypes.Type(value = TeamLead.class, name = "teamLead")
+  @JsonSubTypes.Type(value = Developer.class, name = "Developer"),
+  @JsonSubTypes.Type(value = Manager.class, name = "Manager"),
+  @JsonSubTypes.Type(value = HRManager.class, name = "Hr"),
+  @JsonSubTypes.Type(value = ProjectManager.class, name = "ProjectManager"),
+  @JsonSubTypes.Type(value = QAEngineer.class, name = "QAEngineer"),
+  @JsonSubTypes.Type(value = TeamLead.class, name = "TeamLead"),
+  @JsonSubTypes.Type(value = Designer.class, name = "Designer")
 })
 @Entity
 @Table(name = "employees")
@@ -35,7 +37,7 @@ public abstract class Employee {
   private String name;
 
   @Column(name = "salary", nullable = false)
-  private double salary;
+  private BigDecimal salary;
 
   @Enumerated(EnumType.STRING)
   @Column(name = "department", nullable = false)
@@ -66,13 +68,6 @@ public abstract class Employee {
     this.id = id;
   }
 
-  public Department getDepartment() {
-    return department;
-  }
-
-  public void setDepartment(Department department) {
-    this.department = department;
-  }
 
   public String getName() {
     return name;
@@ -82,18 +77,26 @@ public abstract class Employee {
     this.name = name;
   }
 
-  public double getSalary() {
+  public BigDecimal getSalary() {
     return salary;
   }
 
-  public void setSalary(double salary) throws SalaryException {
-    if (salary < 0) {
+  public void setSalary(BigDecimal salary) throws SalaryException {
+    if (salary.compareTo(BigDecimal.ZERO) < 0) {
       throw new SalaryException("Зарплата не может быть отрицательной: " + salary);
     }
-    if (salary > 50000) {
+    if (salary.compareTo(new BigDecimal("50000")) > 0) {
       throw new SalaryException("Зарплата слишком большая: " + salary);
     }
     this.salary = salary;
+  }
+
+  public Department getDepartment() {
+    return department;
+  }
+
+  public void setDepartment(Department department) {
+    this.department = department;
   }
 
   public LocalDateTime getCreatedAt() {

@@ -6,6 +6,7 @@ import ru.learning.java.exceptions.SalaryException;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
@@ -23,11 +24,11 @@ class EmployeeFileManagerTest {
   void setUp() throws SalaryException {
     developer = new Developer();
     developer.setName("Test Dev");
-    developer.setSalary(4000);
+    developer.setSalary(new BigDecimal("4000"));
 
     manager = new Manager();
     manager.setName("Test Manager");
-    manager.setSalary(5000);
+    manager.setSalary(new BigDecimal(5000));
   }
 
   @AfterEach
@@ -100,7 +101,7 @@ class EmployeeFileManagerTest {
 
       assertEquals(2, parts.length, "Строка должна содержать 2 части (имя и зарплата)");
       assertEquals("Test Dev", parts[0], "Первая часть должна быть именем");
-      assertEquals("4000.0", parts[1], "Вторая часть должна быть зарплатой");
+      assertEquals("4000", parts[1], "Вторая часть должна быть зарплатой");
     }
   }
 

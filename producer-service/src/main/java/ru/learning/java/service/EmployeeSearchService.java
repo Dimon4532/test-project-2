@@ -81,15 +81,13 @@ public class EmployeeSearchService {
      */
     private EmployeeDocument convertToDocument(Employee employee) {
         String employeeType = employee.getClass().getSimpleName();
-        Integer teamSize = null;
 
         return new EmployeeDocument(
                 employee.getId(),
                 employee.getName(),
                 employee.getSalary(),
                 employee.getDepartment(),
-                employeeType,
-                teamSize
+                employeeType
         );
     }
 }

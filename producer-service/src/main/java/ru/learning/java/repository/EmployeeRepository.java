@@ -46,14 +46,12 @@ public class EmployeeRepository {
   public void update(Employee updatedEmployee) {
     validateEmployee(updatedEmployee);
 
-    // Проверяем существование сотрудника
     boolean exists = false;
 
     if (updatedEmployee.getId() != null) {
       exists = jpaRepository.existsById(updatedEmployee.getId());
     }
 
-    // Если не найден по ID, пытаемся найти по имени (совместимость со старой логикой)
     if (!exists && updatedEmployee.getName() != null) {
       exists = jpaRepository.findByName(updatedEmployee.getName()).isPresent();
       if (exists) {
@@ -99,7 +97,6 @@ public class EmployeeRepository {
   }
 
   public Employee findById(String id) {
-    return jpaRepository.findById(id)
-            .orElseThrow(() -> new RuntimeException("Сотрудник с ID " + id + " не найден"));
+    return jpaRepository.findById(id).orElseThrow(() -> new RuntimeException("Сотрудник с ID " + id + " не найден"));
   }
 }

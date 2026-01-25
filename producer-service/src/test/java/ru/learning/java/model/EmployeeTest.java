@@ -6,6 +6,8 @@ import org.junit.jupiter.params.provider.ValueSource;
 import ru.learning.java.Trainable;
 import ru.learning.java.exceptions.SalaryException;
 
+import java.math.BigDecimal;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 @DisplayName("Тесты для Employee и его наследников")
@@ -22,23 +24,23 @@ class EmployeeTest {
   void setUp() throws SalaryException {
     developer = new Developer();
     developer.setName("Test Developer");
-    developer.setSalary(4000);
+    developer.setSalary(new BigDecimal(4000));
 
     manager = new Manager();
     manager.setName("Test Manager");
-    manager.setSalary(5000);
+    manager.setSalary(new BigDecimal(5000));
 
     designer = new Designer();
     designer.setName("Test Designer");
-    designer.setSalary(3500);
+    designer.setSalary(new BigDecimal(3500));
 
     qaEngineer = new QAEngineer();
     qaEngineer.setName("Test QA");
-    qaEngineer.setSalary(3800);
+    qaEngineer.setSalary(new BigDecimal(3800));
 
     teamLead = new TeamLead();
     teamLead.setName("Test TeamLead");
-    teamLead.setSalary(6000);
+    teamLead.setSalary(new BigDecimal(6000));
   }
 
   @AfterEach
@@ -61,15 +63,16 @@ class EmployeeTest {
   @Test
   @DisplayName("Проверка установки и получения зарплаты")
   void testSetAndGetSalary() throws SalaryException {
-    developer.setSalary(5000);
-    assertEquals(5000, developer.getSalary(), 0.01, "Зарплата должна быть установлена корректно");
+    developer.setSalary(new BigDecimal("5000"));
+    assertEquals(0, new BigDecimal("5000").compareTo(developer.getSalary()),
+            "Зарплата должна быть установлена корректно");
   }
 
   @Test
   @DisplayName("Проверка выброса исключения при отрицательной зарплате")
   void testNegativeSalaryThrowsException() {
     SalaryException exception = assertThrows(SalaryException.class, () -> {
-      developer.setSalary(-1000);
+      developer.setSalary(new BigDecimal(-1000));
     }, "Должно быть выброшено исключение для отрицательной зарплаты");
 
     assertTrue(exception.getMessage().contains("отрицательной"),
@@ -80,7 +83,7 @@ class EmployeeTest {
   @DisplayName("Проверка выброса исключения при слишком большой зарплате")
   void testExcessiveSalaryThrowsException() {
     SalaryException exception = assertThrows(SalaryException.class, () -> {
-      developer.setSalary(100000);
+      developer.setSalary(new BigDecimal(100000));
     }, "Должно быть выброшено исключение для слишком большой зарплаты");
 
     assertTrue(exception.getMessage().contains("большая"),
@@ -89,20 +92,22 @@ class EmployeeTest {
 
   @ParameterizedTest
   @DisplayName("Параметризованный тест валидных зарплат")
-  @ValueSource(doubles = {0.0, 1000.0, 25000.0, 49999.99, 50000.0})
-  void testValidSalaries(double salary) {
+  @ValueSource(strings = {"0.0", "1000.0", "25000.0", "49999.99", "50000.0"})
+  void testValidSalaries(String salaryStr) {
     assertDoesNotThrow(() -> {
+      BigDecimal salary = new BigDecimal(salaryStr);
       developer.setSalary(salary);
-      assertEquals(salary, developer.getSalary(), 0.01);
+      assertEquals(0, salary.compareTo(developer.getSalary()),
+              "Установленная зарплата должна совпадать с полученной");
     }, "Валидная зарплата не должна вызывать исключения");
   }
 
   @ParameterizedTest
   @DisplayName("Параметризованный тест невалидных зарплат")
-  @ValueSource(doubles = {-1.0, -1000.0, 50000.01, 100000.0})
-  void testInvalidSalaries(double salary) {
+  @ValueSource(strings = {"-1.0", "-1000.0", "50000.01", "100000.0"})
+  void testInvalidSalaries(String salaryStr) {
     assertThrows(SalaryException.class, () -> {
-      developer.setSalary(salary);
+      developer.setSalary(new BigDecimal(salaryStr));
     }, "Невалидная зарплата должна вызывать исключение");
   }
 
@@ -140,7 +145,7 @@ class EmployeeTest {
 
     Developer juniorDev = new Developer();
     juniorDev.setName("Junior Dev");
-    juniorDev.setSalary(3000);
+    juniorDev.setSalary(new BigDecimal(3000));
 
     assertDoesNotThrow(() -> {
       teamLead.assignTask(juniorDev, "Implement feature");

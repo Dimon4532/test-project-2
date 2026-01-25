@@ -14,6 +14,8 @@ import ru.learning.java.model.Manager;
 import ru.learning.java.repository.EmployeeJpaRepository;
 import ru.learning.java.repository.EmployeeRepository;
 
+import java.math.BigDecimal;
+
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;
 
@@ -30,7 +32,7 @@ public class EmployeeValidationTest {
     employee.setName("Test Dev");
 
     SalaryException exception = assertThrows(SalaryException.class, () -> {
-      employee.setSalary(-1000);
+      employee.setSalary(new BigDecimal(-1000));
     });
 
     assertTrue(exception.getMessage().contains("отрицательной"),
@@ -44,7 +46,7 @@ public class EmployeeValidationTest {
     employee.setName("Rich Manager");
 
     SalaryException exception = assertThrows(SalaryException.class, () -> {
-      employee.setSalary(100000);
+      employee.setSalary(new BigDecimal(100000));
     });
 
     assertTrue(exception.getMessage().contains("слишком большая"),
@@ -60,7 +62,7 @@ public class EmployeeValidationTest {
 
     Employee unnamedEmployee = new Developer();
     unnamedEmployee.setName("");
-    assertDoesNotThrow(() -> unnamedEmployee.setSalary(1000));
+    assertDoesNotThrow(() -> unnamedEmployee.setSalary(new BigDecimal(1000)));
     unnamedEmployee.setDepartment(Department.IT);
 
     InvalidEmployeeException exception = assertThrows(InvalidEmployeeException.class, () -> {

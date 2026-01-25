@@ -18,13 +18,13 @@ public class EmployeeEventProducer {
   public void sendEvent(Employee employee) {
     String departmentName = employee.getDepartment() != null
       ? employee.getDepartment().name()
-      : "FLOW"; // Здесь для проверки лучше задам значение по умолчанию
+      : "FLOW";
 
     EmployeeWithDepartmentEvent event = new EmployeeWithDepartmentEvent(
       employee.getName(),
       departmentName
     );
 
-    kafkaTemplate.send(Topics.EMPLOYEE_RAW, employee.getId(), event);;
+    kafkaTemplate.send(Topics.EMPLOYEE_RAW, employee.getId(), event);
   }
 }
