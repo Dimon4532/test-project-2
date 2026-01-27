@@ -7,7 +7,7 @@ import ru.learning.java.company.Department;
 
 @Entity
 @DiscriminatorValue("HRManager")
-public class HRManager extends Employee {
+public final class HRManager extends Employee {
 
   @Column(name = "candidates_interviewed")
   private int candidatesInterviewed = 0;

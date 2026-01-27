@@ -6,7 +6,7 @@ import jakarta.persistence.Entity;
 
 @Entity
 @DiscriminatorValue("QAEngineer")
-public class QAEngineer extends Employee {
+public final class QAEngineer extends Employee {
 
   @Column(name = "bugs_found")
   private int bugsFound = 0;

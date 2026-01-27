@@ -35,7 +35,7 @@ class EmployeeTest {
     designer.setSalary(new BigDecimal(3500));
 
     qaEngineer = new QAEngineer();
-    qaEngineer.setName("Test QA");
+    qaEngineer.setName("Test QAEngineer");
     qaEngineer.setSalary(new BigDecimal(3800));
 
     teamLead = new TeamLead();

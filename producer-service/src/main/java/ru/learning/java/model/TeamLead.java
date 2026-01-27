@@ -6,7 +6,7 @@ import jakarta.persistence.Entity;
 
 @Entity
 @DiscriminatorValue("TeamLead")
-public class TeamLead extends Developer {
+public final class TeamLead extends Developer {
 
   @Column(name = "team_size")
   private int teamSize = 0;

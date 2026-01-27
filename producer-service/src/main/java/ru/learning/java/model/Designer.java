@@ -5,7 +5,7 @@ import jakarta.persistence.Entity;
 
 @Entity
 @DiscriminatorValue("Designer")
-public class Designer extends Employee {
+public final class Designer extends Employee {
   @Override
   public void work() {
     System.out.println(getName() + " is working on the design.");
