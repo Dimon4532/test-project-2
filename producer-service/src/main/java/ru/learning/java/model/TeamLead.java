@@ -1,6 +1,14 @@
 package ru.learning.java.model;
 
+import jakarta.persistence.Column;
+import jakarta.persistence.DiscriminatorValue;
+import jakarta.persistence.Entity;
+
+@Entity
+@DiscriminatorValue("TeamLead")
 public class TeamLead extends Developer {
+
+  @Column(name = "team_size")
   private int teamSize = 0;
 
   @Override

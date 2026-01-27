@@ -1,4 +1,3 @@
-
 package ru.learning.java.model;
 
 import org.junit.jupiter.api.*;

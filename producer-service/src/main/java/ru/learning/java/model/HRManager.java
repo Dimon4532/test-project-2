@@ -1,13 +1,15 @@
 package ru.learning.java.model;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
 import ru.learning.java.company.Department;
 
 @Entity
-@DiscriminatorValue("HR_MANAGER")
+@DiscriminatorValue("HRManager")
 public class HRManager extends Employee {
 
+  @Column(name = "candidates_interviewed")
   private int candidatesInterviewed = 0;
 
   public HRManager() {

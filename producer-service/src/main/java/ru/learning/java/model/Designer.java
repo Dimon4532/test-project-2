@@ -4,7 +4,7 @@ import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
 
 @Entity
-@DiscriminatorValue("DESIGNER")
+@DiscriminatorValue("Designer")
 public class Designer extends Employee {
   @Override
   public void work() {

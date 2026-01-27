@@ -1,11 +1,14 @@
 package ru.learning.java.model;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
 
 @Entity
-@DiscriminatorValue("QA_ENGINEER")
+@DiscriminatorValue("QAEngineer")
 public class QAEngineer extends Employee {
+
+  @Column(name = "bugs_found")
   private int bugsFound = 0;
 
   @Override

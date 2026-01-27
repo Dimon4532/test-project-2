@@ -1,5 +1,6 @@
 package ru.learning.java.model;
 
+import jakarta.persistence.*;
 import ru.learning.java.exceptions.InvalidEmployeeException;
 import ru.learning.java.exceptions.SalaryException;
 
