@@ -65,9 +65,7 @@ class ProjectManagerTest {
   @Test
   @DisplayName("Проверка выброса исключения при добавлении null сотрудника")
   void testAddNullEmployee() {
-    InvalidEmployeeException exception = assertThrows(InvalidEmployeeException.class, () -> {
-      projectManager.addEmployee(null);
-    }, "Добавление null сотрудника должно вызывать InvalidEmployeeException");
+    InvalidEmployeeException exception = assertThrows(InvalidEmployeeException.class, () -> projectManager.addEmployee(null), "Добавление null сотрудника должно вызывать InvalidEmployeeException");
 
     assertTrue(exception.getMessage().contains("null"),
             "Сообщение должно содержать информацию о null");
@@ -80,9 +78,7 @@ class ProjectManagerTest {
     invalidDev.setName("");
     invalidDev.setSalary(new BigDecimal("4000"));
 
-    InvalidEmployeeException exception = assertThrows(InvalidEmployeeException.class, () -> {
-      projectManager.addEmployee(invalidDev);
-    }, "Добавление сотрудника с пустым именем должно вызывать исключение");
+    InvalidEmployeeException exception = assertThrows(InvalidEmployeeException.class, () -> projectManager.addEmployee(invalidDev), "Добавление сотрудника с пустым именем должно вызывать исключение");
 
     assertTrue(exception.getMessage().contains("пустым"),
             "Сообщение должно содержать информацию о пустом имени");
@@ -172,9 +168,7 @@ class ProjectManagerTest {
     projectManager.addEmployee(developer);
     projectManager.addEmployee(manager);
 
-    assertDoesNotThrow(() -> {
-      projectManager.assignTasks();
-    }, "Распределение задач не должно вызывать исключений");
+    assertDoesNotThrow(() -> projectManager.assignTasks(), "Распределение задач не должно вызывать исключений");
   }
 
   @Test
@@ -183,9 +177,7 @@ class ProjectManagerTest {
     projectManager.addEmployee(developer);
     projectManager.addEmployee(designer);
 
-    assertDoesNotThrow(() -> {
-      projectManager.assignTasksAlternative();
-    }, "Альтернативное распределение задач не должно вызывать исключений");
+    assertDoesNotThrow(() -> projectManager.assignTasksAlternative(), "Альтернативное распределение задач не должно вызывать исключений");
   }
 
   @Test
@@ -194,9 +186,7 @@ class ProjectManagerTest {
     projectManager.addEmployee(developer);
     projectManager.addEmployee(manager);
 
-    assertDoesNotThrow(() -> {
-      projectManager.checkAllEmployeesAvailability();
-    }, "Проверка доступности не должна вызывать исключений");
+    assertDoesNotThrow(() -> projectManager.checkAllEmployeesAvailability(), "Проверка доступности не должна вызывать исключений");
   }
 
   @Test
@@ -204,17 +194,13 @@ class ProjectManagerTest {
   void testCheckEmployeeAvailabilityExists() throws SalaryException, InvalidEmployeeException {
     projectManager.addEmployee(developer);
 
-    assertDoesNotThrow(() -> {
-      projectManager.checkEmployeeAvailability("Alice");
-    }, "Проверка существующего сотрудника не должна вызывать исключений");
+    assertDoesNotThrow(() -> projectManager.checkEmployeeAvailability("Alice"), "Проверка существующего сотрудника не должна вызывать исключений");
   }
 
   @Test
   @DisplayName("Проверка поиска несуществующего сотрудника")
   void testCheckEmployeeAvailabilityNotExists() {
-    assertDoesNotThrow(() -> {
-      projectManager.checkEmployeeAvailability("NonExistent");
-    }, "Проверка несуществующего сотрудника не должна вызывать исключений");
+    assertDoesNotThrow(() -> projectManager.checkEmployeeAvailability("NonExistent"), "Проверка несуществующего сотрудника не должна вызывать исключений");
   }
 
   @Nested
