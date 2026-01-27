@@ -60,8 +60,8 @@ class ExceptionTests {
     SalaryException salaryException = new SalaryException("Test");
     InvalidEmployeeException employeeException = new InvalidEmployeeException("Test");
 
-    assertTrue(salaryException instanceof Exception, "SalaryException должно наследоваться от Exception");
-    assertTrue(employeeException instanceof Exception, "InvalidEmployeeException должно наследоваться от Exception");
+    assertInstanceOf(Exception.class, salaryException, "SalaryException должно наследоваться от Exception");
+    assertInstanceOf(Exception.class, employeeException, "InvalidEmployeeException должно наследоваться от Exception");
   }
 
   @ParameterizedTest

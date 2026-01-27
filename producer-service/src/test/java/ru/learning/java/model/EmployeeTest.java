@@ -65,15 +65,13 @@ class EmployeeTest {
   void testSetAndGetSalary() throws SalaryException {
     developer.setSalary(new BigDecimal("5000"));
     assertEquals(0, new BigDecimal("5000").compareTo(developer.getSalary()),
-            "Зарплата должна быть установлена корректно");
+      "Зарплата должна быть установлена корректно");
   }
 
   @Test
   @DisplayName("Проверка выброса исключения при отрицательной зарплате")
   void testNegativeSalaryThrowsException() {
-    SalaryException exception = assertThrows(SalaryException.class, () -> {
-      developer.setSalary(new BigDecimal(-1000));
-    }, "Должно быть выброшено исключение для отрицательной зарплаты");
+    SalaryException exception = assertThrows(SalaryException.class, () -> developer.setSalary(new BigDecimal(-1000)), "Должно быть выброшено исключение для отрицательной зарплаты");
 
     assertTrue(exception.getMessage().contains("отрицательной"),
       "Сообщение исключения должно содержать информацию об отрицательной зарплате");
@@ -82,9 +80,7 @@ class EmployeeTest {
   @Test
   @DisplayName("Проверка выброса исключения при слишком большой зарплате")
   void testExcessiveSalaryThrowsException() {
-    SalaryException exception = assertThrows(SalaryException.class, () -> {
-      developer.setSalary(new BigDecimal(100000));
-    }, "Должно быть выброшено исключение для слишком большой зарплаты");
+    SalaryException exception = assertThrows(SalaryException.class, () -> developer.setSalary(new BigDecimal(100000)), "Должно быть выброшено исключение для слишком большой зарплаты");
 
     assertTrue(exception.getMessage().contains("большая"),
       "Сообщение исключения должно содержать информацию о превышении лимита");
@@ -98,7 +94,7 @@ class EmployeeTest {
       BigDecimal salary = new BigDecimal(salaryStr);
       developer.setSalary(salary);
       assertEquals(0, salary.compareTo(developer.getSalary()),
-              "Установленная зарплата должна совпадать с полученной");
+        "Установленная зарплата должна совпадать с полученной");
     }, "Валидная зарплата не должна вызывать исключения");
   }
 
@@ -106,22 +102,20 @@ class EmployeeTest {
   @DisplayName("Параметризованный тест невалидных зарплат")
   @ValueSource(strings = {"-1.0", "-1000.0", "50000.01", "100000.0"})
   void testInvalidSalaries(String salaryStr) {
-    assertThrows(SalaryException.class, () -> {
-      developer.setSalary(new BigDecimal(salaryStr));
-    }, "Невалидная зарплата должна вызывать исключение");
+    assertThrows(SalaryException.class, () -> developer.setSalary(new BigDecimal(salaryStr)), "Невалидная зарплата должна вызывать исключение");
   }
 
   @Test
   @DisplayName("Проверка полиморфизма - Developer является Employee")
   void testDeveloperIsEmployee() {
-    assertTrue(developer instanceof Employee, "Developer должен быть экземпляром Employee");
+    assertInstanceOf(Employee.class, developer, "Developer должен быть экземпляром Employee");
   }
 
   @Test
   @DisplayName("Проверка полиморфизма - TeamLead является Developer")
   void testTeamLeadIsDeveloper() {
-    assertTrue(teamLead instanceof Developer, "TeamLead должен быть экземпляром Developer");
-    assertTrue(teamLead instanceof Employee, "TeamLead должен быть экземпляром Employee");
+    assertInstanceOf(Developer.class, teamLead, "TeamLead должен быть экземпляром Developer");
+    assertInstanceOf(Employee.class, teamLead, "TeamLead должен быть экземпляром Employee");
   }
 
   @Test
@@ -147,9 +141,7 @@ class EmployeeTest {
     juniorDev.setName("Junior Dev");
     juniorDev.setSalary(new BigDecimal(3000));
 
-    assertDoesNotThrow(() -> {
-      teamLead.assignTask(juniorDev, "Implement feature");
-    }, "Назначение задачи не должно вызывать исключений");
+    assertDoesNotThrow(() -> teamLead.assignTask(juniorDev, "Implement feature"), "Назначение задачи не должно вызывать исключений");
   }
 
   @Nested
@@ -171,7 +163,7 @@ class EmployeeTest {
     @Test
     @DisplayName("Проверка интерфейса Trainable")
     void testTrainableInterface() {
-      assertTrue(manager instanceof Trainable, "Manager должен реализовывать интерфейс Trainable");
+      assertInstanceOf(Trainable.class, manager, "Manager должен реализовывать интерфейс Trainable");
     }
 
     @Test

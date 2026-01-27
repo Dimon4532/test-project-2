@@ -8,7 +8,6 @@ import ru.learning.java.company.Department;
 
 import java.math.BigDecimal;
 
-
 @Document(indexName = "employees")
 public class EmployeeDocument {
 

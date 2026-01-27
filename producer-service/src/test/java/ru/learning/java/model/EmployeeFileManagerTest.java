@@ -79,13 +79,14 @@ class EmployeeFileManagerTest {
   @Test
   @DisplayName("Проверка автоматического закрытия файла (try-with-resources)")
   void testAutoCloseable() throws IOException {
-    EmployeeFileManager fileManager = new EmployeeFileManager(TEST_FILE);
-    fileManager.writeEmployee(developer);
+    try (EmployeeFileManager fileManager = new EmployeeFileManager(TEST_FILE)) {
+      fileManager.writeEmployee(developer);
 
-    assertDoesNotThrow(fileManager::close,
-      "Закрытие файла не должно вызывать исключений");
+      assertDoesNotThrow(fileManager::close,
+        "Закрытие файла не должно вызывать исключений");
 
-    assertTrue(Files.exists(Path.of(TEST_FILE)), "Файл должен существовать после закрытия");
+      assertTrue(Files.exists(Path.of(TEST_FILE)), "Файл должен существовать после закрытия");
+    }
   }
 
   @Test
@@ -108,8 +109,6 @@ class EmployeeFileManagerTest {
   @Test
   @DisplayName("Проверка создания файла в несуществующей директории")
   void testFileCreationInNonExistentDirectory() {
-    assertThrows(IOException.class, () -> {
-      new EmployeeFileManager("/nonexistent/directory/" + TEST_FILE);
-    }, "Должно быть выброшено IOException при попытке создать файл в несуществующей директории");
+    assertThrows(IOException.class, () -> new EmployeeFileManager("/nonexistent/directory/" + TEST_FILE), "Должно быть выброшено IOException при попытке создать файл в несуществующей директории");
   }
 }

@@ -31,9 +31,7 @@ public class EmployeeValidationTest {
     Employee employee = new Developer();
     employee.setName("Test Dev");
 
-    SalaryException exception = assertThrows(SalaryException.class, () -> {
-      employee.setSalary(new BigDecimal(-1000));
-    });
+    SalaryException exception = assertThrows(SalaryException.class, () -> employee.setSalary(new BigDecimal(-1000)));
 
     assertTrue(exception.getMessage().contains("отрицательной"),
       "Сообщение ошибки должно говорить об отрицательной зарплате");
@@ -45,9 +43,7 @@ public class EmployeeValidationTest {
     Employee employee = new Manager();
     employee.setName("Rich Manager");
 
-    SalaryException exception = assertThrows(SalaryException.class, () -> {
-      employee.setSalary(new BigDecimal(100000));
-    });
+    SalaryException exception = assertThrows(SalaryException.class, () -> employee.setSalary(new BigDecimal(100000)));
 
     assertTrue(exception.getMessage().contains("слишком большая"),
       "Сообщение ошибки должно говорить о превышении лимита");
@@ -65,9 +61,7 @@ public class EmployeeValidationTest {
     assertDoesNotThrow(() -> unnamedEmployee.setSalary(new BigDecimal(1000)));
     unnamedEmployee.setDepartment(Department.IT);
 
-    InvalidEmployeeException exception = assertThrows(InvalidEmployeeException.class, () -> {
-      service.hireEmployee(unnamedEmployee);
-    });
+    InvalidEmployeeException exception = assertThrows(InvalidEmployeeException.class, () -> service.hireEmployee(unnamedEmployee));
 
     assertEquals("Имя сотрудника не может быть пустым", exception.getMessage());
   }

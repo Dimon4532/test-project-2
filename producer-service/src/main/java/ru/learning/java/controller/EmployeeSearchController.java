@@ -15,61 +15,56 @@ import java.util.List;
 @RequestMapping("/api/v1/employees/search")
 public class EmployeeSearchController {
 
-    private final EmployeeSearchService searchService;
-    private final EmployeeService employeeService;
+  private final EmployeeSearchService searchService;
+  private final EmployeeService employeeService;
 
-    public EmployeeSearchController(EmployeeSearchService searchService, EmployeeService employeeService) {
-        this.searchService = searchService;
-        this.employeeService = employeeService;
-    }
+  public EmployeeSearchController(EmployeeSearchService searchService, EmployeeService employeeService) {
+    this.searchService = searchService;
+    this.employeeService = employeeService;
+  }
 
-    /**
-     * Поиск по имени
-     * GET /api/v1/employees/search/by-name?name=Alice
-     */
-    @GetMapping("/by-name")
-    public ResponseEntity<List<EmployeeDocument>> searchByName(@RequestParam String name) {
-        List<EmployeeDocument> results = searchService.searchByName(name);
-        return ResponseEntity.ok(results);
-    }
+  /**
+   * Поиск по имени
+   */
+  @GetMapping("/by-name")
+  public ResponseEntity<List<EmployeeDocument>> searchByName(@RequestParam String name) {
+    List<EmployeeDocument> results = searchService.searchByName(name);
+    return ResponseEntity.ok(results);
+  }
 
-    /**
-     * Поиск по отделу
-     * GET /api/v1/employees/search/by-department?department=FLOW
-     */
-    @GetMapping("/by-department")
-    public ResponseEntity<List<EmployeeDocument>> searchByDepartment(@RequestParam String department) {
-        List<EmployeeDocument> results = searchService.searchByDepartment(department);
-        return ResponseEntity.ok(results);
-    }
+  /**
+   * Поиск по отделу
+   */
+  @GetMapping("/by-department")
+  public ResponseEntity<List<EmployeeDocument>> searchByDepartment(@RequestParam String department) {
+    List<EmployeeDocument> results = searchService.searchByDepartment(department);
+    return ResponseEntity.ok(results);
+  }
 
-    /**
-     * Поиск по типу сотрудника
-     * GET /api/v1/employees/search/by-type?type=Developer
-     */
-    @GetMapping("/by-type")
-    public ResponseEntity<List<EmployeeDocument>> searchByType(@RequestParam String type) {
-        List<EmployeeDocument> results = searchService.searchByType(type);
-        return ResponseEntity.ok(results);
-    }
+  /**
+   * Поиск по типу сотрудника
+   */
+  @GetMapping("/by-type")
+  public ResponseEntity<List<EmployeeDocument>> searchByType(@RequestParam String type) {
+    List<EmployeeDocument> results = searchService.searchByType(type);
+    return ResponseEntity.ok(results);
+  }
 
-    /**
-     * Получить все индексированные документы
-     * GET /api/v1/employees/search/all
-     */
-    @GetMapping("/all")
-    public ResponseEntity<List<EmployeeDocument>> getAllIndexed() {
-        List<EmployeeDocument> results = searchService.findAll();
-        return ResponseEntity.ok(results);
-    }
+  /**
+   * Получить все индексированные документы
+   */
+  @GetMapping("/all")
+  public ResponseEntity<List<EmployeeDocument>> getAllIndexed() {
+    List<EmployeeDocument> results = searchService.findAll();
+    return ResponseEntity.ok(results);
+  }
 
-    /**
-     * Переиндексировать всех сотрудников
-     * POST /api/v1/employees/search/reindex
-     */
-    @PostMapping("/reindex")
-    public ResponseEntity<String> reindexAll() {
-        employeeService.reindexAllEmployees();
-        return ResponseEntity.ok("Все сотрудники успешно переиндексированы в Elasticsearch");
-    }
+  /**
+   * Переиндексировать всех сотрудников
+   */
+  @PostMapping("/reindex")
+  public ResponseEntity<String> reindexAll() {
+    employeeService.reindexAllEmployees();
+    return ResponseEntity.ok("Все сотрудники успешно переиндексированы в Elasticsearch");
+  }
 }

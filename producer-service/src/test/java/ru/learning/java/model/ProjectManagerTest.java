@@ -68,7 +68,7 @@ class ProjectManagerTest {
     InvalidEmployeeException exception = assertThrows(InvalidEmployeeException.class, () -> projectManager.addEmployee(null), "Добавление null сотрудника должно вызывать InvalidEmployeeException");
 
     assertTrue(exception.getMessage().contains("null"),
-            "Сообщение должно содержать информацию о null");
+      "Сообщение должно содержать информацию о null");
   }
 
   @Test
@@ -81,7 +81,7 @@ class ProjectManagerTest {
     InvalidEmployeeException exception = assertThrows(InvalidEmployeeException.class, () -> projectManager.addEmployee(invalidDev), "Добавление сотрудника с пустым именем должно вызывать исключение");
 
     assertTrue(exception.getMessage().contains("пустым"),
-            "Сообщение должно содержать информацию о пустом имени");
+      "Сообщение должно содержать информацию о пустом имени");
   }
 
   @Test
@@ -99,12 +99,12 @@ class ProjectManagerTest {
     projectManager.addEmployee(designer);
 
     BigDecimal expectedBudget = new BigDecimal("4000")
-            .add(new BigDecimal("5000"))
-            .add(new BigDecimal("3500"));
+      .add(new BigDecimal("5000"))
+      .add(new BigDecimal("3500"));
     BigDecimal actualBudget = projectManager.calculateTotalBudget();
 
     assertEquals(0, expectedBudget.compareTo(actualBudget),
-            "Общий бюджет должен быть суммой всех зарплат");
+      "Общий бюджет должен быть суммой всех зарплат");
   }
 
   @Test
@@ -112,7 +112,7 @@ class ProjectManagerTest {
   void testCalculateAverageSalaryEmptyTeam() {
     BigDecimal avgSalary = projectManager.calculateAverageSalary();
     assertEquals(0, BigDecimal.ZERO.compareTo(avgSalary),
-            "Средняя зарплата пустой команды должна быть 0");
+      "Средняя зарплата пустой команды должна быть 0");
   }
 
   @Test
@@ -126,18 +126,18 @@ class ProjectManagerTest {
     BigDecimal actualAverage = projectManager.calculateAverageSalary();
 
     assertEquals(0, expectedAverage.compareTo(actualAverage),
-            "Средняя зарплата должна быть корректно рассчитана");
+      "Средняя зарплата должна быть корректно рассчитана");
   }
 
   @ParameterizedTest
   @DisplayName("Параметризованный тест проверки бюджета с разными зарплатами")
   @CsvSource({
-          "1000, 2000, 3000, 6000",
-          "5000, 5000, 5000, 15000",
-          "10000, 20000, 30000, 60000"
+    "1000, 2000, 3000, 6000",
+    "5000, 5000, 5000, 15000",
+    "10000, 20000, 30000, 60000"
   })
   void testCalculateBudgetWithDifferentSalaries(String sal1, String sal2, String sal3, String expected)
-          throws SalaryException, InvalidEmployeeException {
+    throws SalaryException, InvalidEmployeeException {
 
     Developer dev1 = new Developer();
     dev1.setName("Dev1");
@@ -159,7 +159,7 @@ class ProjectManagerTest {
     BigDecimal actualBudget = projectManager.calculateTotalBudget();
 
     assertEquals(0, expectedBudget.compareTo(actualBudget),
-            "Бюджет должен совпадать с ожидаемым");
+      "Бюджет должен совпадать с ожидаемым");
   }
 
   @Test
@@ -233,9 +233,9 @@ class ProjectManagerTest {
       assertTrue(avgSalary.compareTo(budget) <= 0, "Средняя зарплата не может быть больше общего бюджета");
 
       assertAll("Все операции с командой должны выполниться успешно",
-              () -> assertDoesNotThrow(() -> projectManager.assignTasks()),
-              () -> assertDoesNotThrow(() -> projectManager.assignTasksAlternative()),
-              () -> assertDoesNotThrow(() -> projectManager.checkAllEmployeesAvailability())
+        () -> assertDoesNotThrow(() -> projectManager.assignTasks()),
+        () -> assertDoesNotThrow(() -> projectManager.assignTasksAlternative()),
+        () -> assertDoesNotThrow(() -> projectManager.checkAllEmployeesAvailability())
       );
     }
   }
