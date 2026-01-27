@@ -3,8 +3,8 @@ package ru.learning.java.model;
 import jakarta.persistence.Column;
 import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
-import ru.learning.java.Trainable;
-import ru.learning.java.WriterDoc;
+import ru.learning.java.interfaces.Trainable;
+import ru.learning.java.interfaces.WriterDoc;
 
 @Entity
 @DiscriminatorValue("Manager")

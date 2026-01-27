@@ -3,7 +3,7 @@ package ru.learning.java.model;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
-import ru.learning.java.Trainable;
+import ru.learning.java.interfaces.Trainable;
 import ru.learning.java.exceptions.SalaryException;
 
 import java.math.BigDecimal;

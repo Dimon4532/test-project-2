@@ -80,14 +80,6 @@ public class EmployeeSearchService {
      * Конвертация Employee в EmployeeDocument
      */
     private EmployeeDocument convertToDocument(Employee employee) {
-        String employeeType = employee.getClass().getSimpleName();
-
-        return new EmployeeDocument(
-                employee.getId(),
-                employee.getName(),
-                employee.getSalary(),
-                employee.getDepartment(),
-                employeeType
-        );
+      return EmployeeDocument.fromEntity(employee);
     }
 }
