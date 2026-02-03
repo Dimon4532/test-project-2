@@ -12,6 +12,7 @@
         <module>contracts</module>
         <module>producer-service</module>
         <module>validator-service</module>
+        <module>consumer-service</module>
     </modules>
 
     <parent>

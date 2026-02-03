@@ -1,0 +1,16 @@
+spring:
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    show-sql: true
+
+  kafka:
+    consumer:
+      auto-offset-reset: earliest
+      enable-auto-commit: true
+
+logging:
+  level:
+    ru.learning.java: DEBUG
+    org.springframework.kafka: WARN
+    org.testcontainers: INFO
