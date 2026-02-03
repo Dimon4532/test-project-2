@@ -5,6 +5,7 @@ WORKDIR /app
 COPY pom.xml .
 COPY contracts ./contracts
 COPY producer-service ./producer-service
+COPY consumer-service ./consumer-service
 COPY validator-service ./validator-service
 
 # Собираем только нужные модули
