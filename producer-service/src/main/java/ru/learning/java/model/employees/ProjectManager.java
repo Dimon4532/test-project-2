@@ -1,6 +1,5 @@
-package ru.learning.java.model;
+package ru.learning.java.model.employees;
 
-import jakarta.persistence.*;
 import ru.learning.java.exceptions.InvalidEmployeeException;
 import ru.learning.java.exceptions.SalaryException;
 
@@ -125,9 +124,9 @@ public class ProjectManager {
     }
 
     BigDecimal average = totalSalary.divide(
-            BigDecimal.valueOf(team.size()),
-            2,
-            RoundingMode.HALF_UP
+      BigDecimal.valueOf(team.size()),
+      2,
+      RoundingMode.HALF_UP
     );
     System.out.println("Средняя зарплата в команде: " + average);
     return average;

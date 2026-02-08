@@ -5,6 +5,7 @@ import org.springframework.data.elasticsearch.annotations.Document;
 import org.springframework.data.elasticsearch.annotations.Field;
 import org.springframework.data.elasticsearch.annotations.FieldType;
 import ru.learning.java.company.Department;
+import ru.learning.java.model.employees.Employee;
 
 import java.math.BigDecimal;
 

@@ -8,10 +8,10 @@ import ru.learning.java.model.EmployeeEvent;
 
 public class EmployeeEventConsumer {
 
-    @KafkaListener(topics = "test-project-input", groupId = "my-group")
-    public void listen (@Payload EmployeeEvent event ,
-                        @Header(KafkaHeaders.RECEIVED_KEY) String key) {
+  @KafkaListener(topics = "company.employee.raw", groupId = "consumer-group-id")
+  public void listen(@Payload EmployeeEvent event,
+                     @Header(KafkaHeaders.RECEIVED_KEY) String key) {
 
-        System.out.println("Получено сообщение для сотрудника (Key: " + key + "): " + event);
-    }
+    System.out.println("Получено сообщение для сотрудника (Key: " + key + "): " + event);
+  }
 }

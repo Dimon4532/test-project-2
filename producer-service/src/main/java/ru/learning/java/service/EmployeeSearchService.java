@@ -1,7 +1,7 @@
 package ru.learning.java.service;
 
 import org.springframework.stereotype.Service;
-import ru.learning.java.model.Employee;
+import ru.learning.java.model.employees.Employee;
 import ru.learning.java.model.EmployeeDocument;
 import ru.learning.java.repository.EmployeeSearchRepository;
 

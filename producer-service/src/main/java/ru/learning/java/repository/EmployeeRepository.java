@@ -2,7 +2,7 @@ package ru.learning.java.repository;
 
 import org.springframework.stereotype.Repository;
 import ru.learning.java.company.Department;
-import ru.learning.java.model.Employee;
+import ru.learning.java.model.employees.Employee;
 
 import java.util.List;
 import java.util.logging.Level;

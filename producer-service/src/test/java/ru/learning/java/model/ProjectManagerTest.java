@@ -5,6 +5,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import ru.learning.java.exceptions.InvalidEmployeeException;
 import ru.learning.java.exceptions.SalaryException;
+import ru.learning.java.model.employees.*;
 
 import java.math.BigDecimal;
 

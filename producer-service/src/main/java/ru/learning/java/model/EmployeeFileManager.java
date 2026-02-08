@@ -1,5 +1,7 @@
 package ru.learning.java.model;
 
+import ru.learning.java.model.employees.Employee;
+
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;

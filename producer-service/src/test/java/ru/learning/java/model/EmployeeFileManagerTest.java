@@ -2,6 +2,8 @@ package ru.learning.java.model;
 
 import org.junit.jupiter.api.*;
 import ru.learning.java.exceptions.SalaryException;
+import ru.learning.java.model.employees.Developer;
+import ru.learning.java.model.employees.Manager;
 
 import java.io.BufferedReader;
 import java.io.FileReader;

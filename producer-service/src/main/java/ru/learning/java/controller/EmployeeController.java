@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import ru.learning.java.exceptions.InvalidEmployeeException;
 import ru.learning.java.exceptions.SalaryException;
-import ru.learning.java.model.Employee;
+import ru.learning.java.model.employees.Employee;
 import ru.learning.java.service.EmployeeEventProducer;
 import ru.learning.java.service.EmployeeService;
 

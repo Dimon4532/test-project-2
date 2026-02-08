@@ -4,8 +4,8 @@ import org.springframework.stereotype.Service;
 import ru.learning.java.company.BonusBudget;
 import ru.learning.java.exceptions.InvalidEmployeeException;
 import ru.learning.java.exceptions.SalaryException;
-import ru.learning.java.model.Employee;
-import ru.learning.java.model.HRManager;
+import ru.learning.java.model.employees.Employee;
+import ru.learning.java.model.employees.HRManager;
 import ru.learning.java.repository.EmployeeRepository;
 
 import java.math.BigDecimal;
@@ -81,8 +81,8 @@ public class EmployeeService {
     if (team.isEmpty()) return BigDecimal.ZERO;
 
     BigDecimal total = team.stream()
-            .map(Employee::getSalary)
-            .reduce(BigDecimal.ZERO, BigDecimal::add);
+      .map(Employee::getSalary)
+      .reduce(BigDecimal.ZERO, BigDecimal::add);
 
     return total.divide(BigDecimal.valueOf(team.size()), 2, RoundingMode.HALF_UP);
   }

@@ -3,7 +3,7 @@ package ru.learning.java.service;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 import ru.learning.java.kafka.Topics;
-import ru.learning.java.model.Employee;
+import ru.learning.java.model.employees.Employee;
 import ru.learning.java.model.EmployeeWithDepartmentEvent;
 
 @Service

@@ -3,13 +3,26 @@
   "$id": "https://example.local/schemas/employee-with-department-event-v1.json",
   "title": "EmployeeWithDepartmentEvent v1",
   "type": "object",
-  "required": ["eventId", "createdAt", "payload"],
+  "required": [
+    "eventId",
+    "createdAt",
+    "payload"
+  ],
   "properties": {
-    "eventId": { "type": "string", "format": "uuid" },
-    "createdAt": { "type": "string", "format": "date-time" },
+    "eventId": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "createdAt": {
+      "type": "string",
+      "format": "date-time"
+    },
     "payload": {
       "type": "object",
-      "required": ["nameEmployee", "department"],
+      "required": [
+        "nameEmployee",
+        "department"
+      ],
       "properties": {
         "nameEmployee": {
           "type": "string",

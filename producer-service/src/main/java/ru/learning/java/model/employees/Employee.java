@@ -1,4 +1,4 @@
-package ru.learning.java.model;
+package ru.learning.java.model.employees;
 
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;

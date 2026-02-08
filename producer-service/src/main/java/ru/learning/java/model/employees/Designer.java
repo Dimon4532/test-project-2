@@ -1,4 +1,4 @@
-package ru.learning.java.model;
+package ru.learning.java.model.employees;
 
 import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;

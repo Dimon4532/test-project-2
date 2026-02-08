@@ -8,9 +8,9 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import ru.learning.java.company.Department;
 import ru.learning.java.exceptions.InvalidEmployeeException;
 import ru.learning.java.exceptions.SalaryException;
-import ru.learning.java.model.Developer;
-import ru.learning.java.model.Employee;
-import ru.learning.java.model.Manager;
+import ru.learning.java.model.employees.Developer;
+import ru.learning.java.model.employees.Employee;
+import ru.learning.java.model.employees.Manager;
 import ru.learning.java.repository.EmployeeJpaRepository;
 import ru.learning.java.repository.EmployeeRepository;
 
