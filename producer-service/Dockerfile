@@ -6,6 +6,7 @@ COPY pom.xml .
 COPY contracts ./contracts
 COPY producer-service ./producer-service
 COPY validator-service ./validator-service
+COPY consumer-service ./consumer-service
 
 # Собираем только нужные модули
 RUN mvn clean install -pl contracts -am -DskipTests
