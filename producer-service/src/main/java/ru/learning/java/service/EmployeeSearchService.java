@@ -1,6 +1,7 @@
 package ru.learning.java.service;
 
 import org.springframework.stereotype.Service;
+import ru.learning.java.company.Department;
 import ru.learning.java.model.employees.Employee;
 import ru.learning.java.model.EmployeeDocument;
 import ru.learning.java.repository.EmployeeSearchRepository;
@@ -46,7 +47,7 @@ public class EmployeeSearchService {
     /**
      * Поиск по отделу
      */
-    public List<EmployeeDocument> searchByDepartment(String department) {
+    public List<EmployeeDocument> searchByDepartment(Department department) {
         return searchRepository.findByDepartment(department);
     }
 

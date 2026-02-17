@@ -2,6 +2,7 @@ package ru.learning.java.controller;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import ru.learning.java.company.Department;
 import ru.learning.java.model.EmployeeDocument;
 import ru.learning.java.service.EmployeeSearchService;
 import ru.learning.java.service.EmployeeService;
@@ -36,7 +37,7 @@ public class EmployeeSearchController {
    * Поиск по отделу
    */
   @GetMapping("/by-department")
-  public ResponseEntity<List<EmployeeDocument>> searchByDepartment(@RequestParam String department) {
+  public ResponseEntity<List<EmployeeDocument>> searchByDepartment(@RequestParam Department department) {
     List<EmployeeDocument> results = searchService.searchByDepartment(department);
     return ResponseEntity.ok(results);
   }
