@@ -145,6 +145,50 @@ services:
         condition: service_started
     restart: on-failure
 
+  # MongoDB (он потребуется для Analytics Service)
+  mongodb:
+    image: mongo:7.0
+    container_name: mongodb
+    environment:
+      MONGO_INITDB_DATABASE: analytics_db
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongodb_data:/data/db
+    networks:
+      - default-network
+    healthcheck:
+      test: [ "CMD", "mongosh", "--eval", "db.adminCommand('ping')" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # Analytics Service
+  analytics-service:
+    build:
+      context: .
+      dockerfile: analytics-service/Dockerfile
+    container_name: analytics-service
+    ports:
+      - "8084:8084"
+    environment:
+      - SPRING_KAFKA_BOOTSTRAP_SERVERS=kafka:29092
+      - SPRING_DATA_MONGODB_URI=mongodb://mongodb:27017/analytics_db
+    networks:
+      - default-network
+    depends_on:
+      kafka:
+        condition: service_healthy
+      mongodb:
+        condition: service_healthy
+      producer-service:
+        condition: service_started
+      validator-service:
+        condition: service_started
+      consumer-service:
+        condition: service_started
+    restart: on-failure
+
 networks:
   default-network:
     driver: bridge
@@ -153,3 +197,4 @@ volumes:
   producer_postgres_data:
   consumer_postgres_data:
   elasticsearch_data:
+  mongodb_data:

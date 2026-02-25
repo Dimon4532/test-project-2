@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Analytics Dashboard</title>
+    <script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/stompjs@2.3.3/lib/stomp.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px;
+            color: #333;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            text-align: center;
+            color: white;
+            margin-bottom: 30px;
+            font-size: 2.5em;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .status {
+            text-align: center;
+            padding: 10px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            background: white;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .status.connected {
+            border-left: 5px solid #10b981;
+        }
+
+        .status.disconnected {
+            border-left: 5px solid #ef4444;
+        }
+
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .metric-card {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1);
+            transition: transform 0.2s;
+        }
+
+        .metric-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .metric-card h3 {
+            color: #667eea;
+            margin-bottom: 15px;
+            font-size: 1.2em;
+            border-bottom: 2px solid #f0f0f0;
+            padding-bottom: 10px;
+        }
+
+        .metric-value {
+            font-size: 2.5em;
+            font-weight: bold;
+            color: #333;
+            margin: 10px 0;
+        }
+
+        .metric-label {
+            color: #666;
+            font-size: 0.9em;
+        }
+
+        .chart-container {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1);
+        }
+
+        .health-score {
+            font-size: 3em;
+            font-weight: bold;
+            text-align: center;
+        }
+
+        .health-score.good {
+            color: #10b981;
+        }
+
+        .health-score.warning {
+            color: #f59e0b;
+        }
+
+        .health-score.critical {
+            color: #ef4444;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 20px;
+            background: #e5e7eb;
+            border-radius: 10px;
+            overflow: hidden;
+            margin-top: 10px;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+            transition: width 0.5s ease;
+        }
+
+        .timestamp {
+            text-align: center;
+            color: white;
+            margin-top: 20px;
+            font-size: 0.9em;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>📊 Real-Time Analytics Dashboard</h1>
+
+    <div class="status disconnected" id="connectionStatus">
+        🔴 Disconnected
+    </div>
+
+    <div class="metrics-grid">
+        <div class="metric-card">
+            <h3>Producer Service</h3>
+            <div class="metric-value" id="producerProcessed">0</div>
+            <div class="metric-label">Events Processed</div>
+            <div class="progress-bar">
+                <div class="progress-fill" id="producerProgress" style="width: 0"></div>
+            </div>
+            <div style="margin-top: 10px;">
+                <span style="color: #10b981;">✓ Success: <span id="producerSuccess">0</span></span> |
+                <span style="color: #ef4444;">✗ Failed: <span id="producerFailed">0</span></span>
+            </div>
+        </div>
+
+        <div class="metric-card">
+            <h3>Validator Service</h3>
+            <div class="metric-value" id="validatorProcessed">0</div>
+            <div class="metric-label">Events Validated</div>
+            <div class="progress-bar">
+                <div class="progress-fill" id="validatorProgress" style="width: 0"></div>
+            </div>
+            <div style="margin-top: 10px;">
+                <span style="color: #10b981;">✓ Success: <span id="validatorSuccess">0</span></span> |
+                <span style="color: #ef4444;">✗ Failed: <span id="validatorFailed">0</span></span>
+            </div>
+        </div>
+
+        <div class="metric-card">
+            <h3>Consumer Service</h3>
+            <div class="metric-value" id="consumerProcessed">0</div>
+            <div class="metric-label">Events Consumed</div>
+            <div class="progress-bar">
+                <div class="progress-fill" id="consumerProgress" style="width: 0"></div>
+            </div>
+            <div style="margin-top: 10px;">
+                <span style="color: #10b981;">✓ Success: <span id="consumerSuccess">0</span></span> |
+                <span style="color: #ef4444;">✗ Failed: <span id="consumerFailed">0</span></span>
+            </div>
+        </div>
+
+        <div class="metric-card">
+            <h3>System Health</h3>
+            <div class="health-score good" id="healthScore">100%</div>
+            <div class="metric-label">Overall System Performance</div>
+        </div>
+    </div>
+
+    <div class="chart-container">
+        <h3 style="margin-bottom: 20px; color: #667eea;">Events Timeline</h3>
+        <canvas id="eventsChart"></canvas>
+    </div>
+
+    <div class="timestamp" id="lastUpdate">
+        Last update: Never
+    </div>
+</div>
+
+<script>
+    let stompClient = null;
+    let chart = null;
+
+    const metricsData = {
+        producer: { processed: 0, successful: 0, failed: 0 },
+        validator: { processed: 0, successful: 0, failed: 0 },
+        consumer: { processed: 0, successful: 0, failed: 0 }
+    };
+
+    // Chart setup
+    const ctx = document.getElementById('eventsChart').getContext('2d');
+    chart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: [],
+            datasets: [
+                {
+                    label: 'Producer',
+                    data: [],
+                    borderColor: '#667eea',
+                    backgroundColor: 'rgba(102, 126, 234, 0.1)',
+                    tension: 0.4
+                },
+                {
+                    label: 'Validator',
+                    data: [],
+                    borderColor: '#764ba2',
+                    backgroundColor: 'rgba(118, 75, 162, 0.1)',
+                    tension: 0.4
+                },
+                {
+                    label: 'Consumer',
+                    data: [],
+                    borderColor: '#10b981',
+                    backgroundColor: 'rgba(16, 185, 129, 0.1)',
+                    tension: 0.4
+                }
+            ]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: true,
+            plugins: {
+                legend: {
+                    position: 'top',
+                }
+            },
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+
+    function connect() {
+        const socket = new SockJS('http://localhost:8084/ws-analytics');
+        stompClient = Stomp.over(socket);
+
+        stompClient.connect({}, function(frame) {
+            console.log('Connected: ' + frame);
+            updateConnectionStatus(true);
+
+            stompClient.subscribe('/topic/metrics', function(message) {
+                const metrics = JSON.parse(message.body);
+                updateMetrics(metrics);
+            });
+        }, function(error) {
+            console.error('Connection error:', error);
+            updateConnectionStatus(false);
+            setTimeout(connect, 5000);
+        });
+    }
+
+    function updateConnectionStatus(connected) {
+        const statusEl = document.getElementById('connectionStatus');
+        if (connected) {
+            statusEl.className = 'status connected';
+            statusEl.innerHTML = '🟢 Connected - Real-time updates active';
+        } else {
+            statusEl.className = 'status disconnected';
+            statusEl.innerHTML = '🔴 Disconnected - Reconnecting...';
+        }
+    }
+
+    function updateMetrics(metrics) {
+        const serviceName = metrics.serviceName.toLowerCase();
+
+        metricsData[serviceName] = {
+            processed: metrics.eventsProcessed,
+            successful: metrics.eventsSuccessful,
+            failed: metrics.eventsFailed
+        };
+
+        // Update DOM
+        document.getElementById(`${serviceName}Processed`).textContent = metrics.eventsProcessed;
+        document.getElementById(`${serviceName}Success`).textContent = metrics.eventsSuccessful;
+        document.getElementById(`${serviceName}Failed`).textContent = metrics.eventsFailed;
+
+        // Update progress bar
+        const successRate = metrics.eventsProcessed > 0
+            ? (metrics.eventsSuccessful / metrics.eventsProcessed * 100)
+            : 0;
+        document.getElementById(`${serviceName}Progress`).style.width = successRate + '%';
+
+        // Update chart
+        updateChart();
+
+        // Update health score
+        updateHealthScore();
+
+        // Update timestamp
+        document.getElementById('lastUpdate').textContent =
+            'Last update: ' + new Date().toLocaleTimeString();
+    }
+
+    function updateChart() {
+        const now = new Date().toLocaleTimeString();
+
+        if (chart.data.labels.length > 20) {
+            chart.data.labels.shift();
+            chart.data.datasets.forEach(dataset => dataset.data.shift());
+        }
+
+        chart.data.labels.push(now);
+        chart.data.datasets[0].data.push(metricsData.producer.processed);
+        chart.data.datasets[1].data.push(metricsData.validator.processed);
+        chart.data.datasets[2].data.push(metricsData.consumer.processed);
+
+        chart.update('none');
+    }
+
+    function updateHealthScore() {
+        let totalProcessed = 0;
+        let totalFailed = 0;
+
+        Object.values(metricsData).forEach(data => {
+            totalProcessed += data.processed;
+            totalFailed += data.failed;
+        });
+
+        const healthScore = totalProcessed > 0
+            ? ((totalProcessed - totalFailed) / totalProcessed * 100).toFixed(1)
+            : 100;
+
+        const healthEl = document.getElementById('healthScore');
+        healthEl.textContent = healthScore + '%';
+
+        if (healthScore >= 95) {
+            healthEl.className = 'health-score good';
+        } else if (healthScore >= 80) {
+            healthEl.className = 'health-score warning';
+        } else {
+            healthEl.className = 'health-score critical';
+        }
+    }
+
+    // Connect on page load
+    window.onload = function() {
+        connect();
+    };
+</script>
+</body>
+</html>

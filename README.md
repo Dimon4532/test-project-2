@@ -1,7 +1,7 @@
 # Test Project 2
 
 A multi-module Spring Boot system demonstrating a distributed architecture with Kafka messaging, PostgreSQL persistence,
-and Elasticsearch search capabilities.
+Elasticsearch search capabilities, and real-time analytics.
 
 ## Overview
 
@@ -12,14 +12,19 @@ The system consists of several microservices communicating via Kafka and utilizi
   Kafka.
 - **Validator Service**: Validates messages using JSON Schema.
 - **Consumer Service**: Consumes messages from Kafka and persists data to its own PostgreSQL database.
+- **Analytics Service**: 📊 Collects metrics from all services, provides real-time analytics, and exposes a web
+  dashboard.
 
 ## Stack
 
 - **Language**: Java 21
 - **Framework**: Spring Boot 3.5.10
 - **Package Manager**: Maven
-- **Messaging**: Apache Kafka
-- **Databases**: PostgreSQL 16, Elasticsearch 8.12.2
+- **Messaging**: Apache Kafka (+ Kafka Streams)
+- **Databases**: PostgreSQL 16, Elasticsearch 8.12.2, MongoDB 7.0
+- **Cache**: Caffeine
+- **Real-time**: WebSocket (STOMP)
+- **Monitoring**: Micrometer + Prometheus
 - **Infrastructure**: Docker & Docker Compose
 
 ## Requirements
@@ -36,7 +41,8 @@ test-project-2/
 ├── producer-service/    # Producer application (Postgres + ES + Kafka)
 ├── validator-service/   # Validator application (Kafka + Schema validation)
 ├── consumer-service/    # Consumer application (Postgres + Kafka)
-├── docker-compose.yml   # Infrastructure setup (Kafka, Postgres, ES)
+├── analytics-service/   # Analytics application (MongoDB + Kafka Streams + WebSocket)
+├── docker-compose.yml   # Infrastructure setup
 └── pom.xml              # Root Maven configuration
 ```
 
@@ -44,7 +50,7 @@ test-project-2/
 
 ### 1. Start Infrastructure
 
-Use Docker Compose to start Kafka, PostgreSQL (2 instances), and Elasticsearch:
+Use Docker Compose to start Kafka, PostgreSQL (2 instances), Elasticsearch, and MongoDB:
 
 ```bash
 docker-compose up -d
@@ -72,12 +78,46 @@ You can run each service using the Spring Boot Maven plugin:
 **Validator Service:**
 `mvn -pl validator-service spring-boot:run`
 
+**Analytics Service:** 📊
+`mvn -pl analytics-service spring-boot:run`
+
+- Port: `8084`
+- Dashboard: `http://localhost:8084/dashboard.html`
+
+## Analytics Service Features
+
+### 🎯 Key Capabilities:
+
+- **Real-time Metrics Collection** via Kafka listeners
+- **Stream Processing** using Kafka Streams
+- **Aggregated Analytics** with scheduled persistence
+- **Caching** for performance optimization (Caffeine)
+- **WebSocket** for live dashboard updates
+- **REST API** for programmatic access
+- **MongoDB** for flexible metrics storage
+- **Prometheus Metrics** for monitoring
+
+### 📡 API Endpoints:
+
+| Endpoint                                    | Method    | Description                      |
+|---------------------------------------------|-----------|----------------------------------|
+| `/api/analytics/report?hours=24`            | GET       | Get aggregated analytics report  |
+| `/api/analytics/metrics/{service}?hours=24` | GET       | Get metrics for specific service |
+| `/api/analytics/health`                     | GET       | Health check                     |
+| `/actuator/prometheus`                      | GET       | Prometheus metrics               |
+| `/ws-analytics`                             | WebSocket | Real-time metrics stream         |
+
+### 📊 Dashboard Features:
+
+- Real-time event counters per service
+- Success/failure rates
+- System health score
+- Interactive timeline chart
+- WebSocket auto-reconnection
+
 ## Configuration
 
 ### Key Environment Variables / Properties
-
-Default values are configured in `application.properties` of each service. They can be overridden via environment
-variables:
 
 | Property                           | Default (Local)                                | Docker Compose Value                                   |
 |------------------------------------|------------------------------------------------|--------------------------------------------------------|
@@ -85,27 +125,70 @@ variables:
 | `SPRING_DATASOURCE_URL` (Producer) | `jdbc:postgresql://localhost:5432/producer_db` | `jdbc:postgresql://postgres-producer:5432/producer_db` |
 | `SPRING_DATASOURCE_URL` (Consumer) | `jdbc:postgresql://localhost:5433/consumer_db` | `jdbc:postgresql://postgres-consumer:5432/consumer_db` |
 | `SPRING_ELASTICSEARCH_URIS`        | `http://localhost:9200`                        | `http://elasticsearch:9200`                            |
+| `SPRING_DATA_MONGODB_URI`          | `mongodb://localhost:27017/analytics_db`       | `mongodb://mongodb:27017/analytics_db`                 |
 
 ## Scripts & Entry Points
 
 - **Build**: `mvn clean install`
 - **Run Tests**: `mvn test`
 - **Infrastructure**: `docker-compose up -d` / `docker-compose down`
+- **View Logs**: `docker-compose logs -f analytics-service`
 
 ## Tests
 
 To run all tests across all modules:
+
 `mvn test`
 
-The project uses **Testcontainers** for integration testing. Ensure Docker is running when executing tests.
+The project uses **Testcontainers** for integration testing with Kafka and MongoDB. Ensure Docker is running when
+executing tests.
 
-## TODO / Unknowns
+### Analytics Service Tests:
 
-- [ ] Add API documentation (e.g., Swagger/OpenAPI).
-- [ ] Implement centralized logging/monitoring.
-- [ ] Define CI/CD pipeline.
-- [ ] TODO: Verify authentication/authorization requirements.
+- ✅ Unit tests with Mockito
+- ✅ Integration tests with Testcontainers (Kafka + MongoDB)
+- ✅ WebSocket connection tests
+- ✅ Metrics aggregation tests
+
+## Architecture Highlights
+
+### Data Flow:
+
+```
+Producer → Kafka (employee-events) → Validator → Kafka (validated-employees) → Consumer
+                     ↓                                       ↓
+              Analytics Service ← ← ← ← ← ← ← ← ← ← ← ← ← ←
+                     ↓
+              [MongoDB Storage]
+                     ↓
+              [WebSocket Push] → Dashboard (Real-time UI)
+```
+
+### Technologies Demonstrated:
+
+- ✅ **Microservices Architecture**
+- ✅ **Event-Driven Design** (Kafka)
+- ✅ **Stream Processing** (Kafka Streams)
+- ✅ **Polyglot Persistence** (PostgreSQL, MongoDB, Elasticsearch)
+- ✅ **Caching Strategies** (Caffeine)
+- ✅ **Real-time Communication** (WebSocket)
+- ✅ **Scheduled Tasks** (@Scheduled)
+- ✅ **Metrics & Monitoring** (Micrometer + Prometheus)
+- ✅ **Integration Testing** (Testcontainers)
+- ✅ **Dockerization**
+
+## TODO / Future Enhancements
+
+- [ ] Add Grafana dashboards for Prometheus metrics
+- [ ] Implement alert system for critical failures
+- [ ] Add historical trend analysis
+- [ ] Implement data retention policies
+- [ ] Add authentication for dashboard
+- [ ] Create CI/CD pipeline
+- [ ] Add API documentation (Swagger/OpenAPI)
 
 ## License
 
 [Insert License Information Here - e.g., MIT, Apache 2.0]
+
+```

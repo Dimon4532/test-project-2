@@ -13,6 +13,7 @@
         <module>producer-service</module>
         <module>validator-service</module>
         <module>consumer-service</module>
+        <module>analytics-service</module>
     </modules>
 
     <parent>
