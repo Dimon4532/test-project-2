@@ -155,11 +155,13 @@ class EmployeeTest {
     void testConductTraining() throws TrainingHoursException {
       assertEquals(0, manager.getTrainingHours(), "Изначально часов тренинга должно быть 0");
 
-      manager.conductTraining("Java Basics");
+      manager.conductTraining("Java Basics", 2);
       assertEquals(2, manager.getTrainingHours(), "После одного тренинга должно быть 2 часа");
 
-      manager.conductTraining("Design Patterns");
+      manager.conductTraining("Design Patterns", 2);
       assertEquals(4, manager.getTrainingHours(), "После двух тренингов должно быть 4 часа");
+
+      assertThrows(TrainingHoursException.class, () -> manager.setTrainingHours(-3), "Присвоено отрицательное количество часов");
     }
 
     @Test
