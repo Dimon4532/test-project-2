@@ -3,6 +3,7 @@ package ru.learning.java.model;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
+import ru.learning.java.exceptions.TrainingHoursException;
 import ru.learning.java.interfaces.Trainable;
 import ru.learning.java.exceptions.SalaryException;
 import ru.learning.java.model.employees.*;
@@ -151,7 +152,7 @@ class EmployeeTest {
 
     @Test
     @DisplayName("Проверка проведения тренингов")
-    void testConductTraining() {
+    void testConductTraining() throws TrainingHoursException {
       assertEquals(0, manager.getTrainingHours(), "Изначально часов тренинга должно быть 0");
 
       manager.conductTraining("Java Basics");
