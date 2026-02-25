@@ -21,6 +21,19 @@ public final class Manager extends Employee implements Trainable, WriterDoc {
 
   @Override
   public void conductTraining(String topic, int hoursToAdd) throws TrainingHoursException {
+    checkTrainingHours(hoursToAdd);
+
+    System.out.println(getName() + " is conducting training on: " + topic);
+    trainingHours += hoursToAdd;
+  }
+
+  @Override
+  public void setTrainingHours(int trainingHours) throws TrainingHoursException {
+    checkTrainingHours(trainingHours);
+    this.trainingHours = trainingHours;
+  }
+
+  private static void checkTrainingHours(int hoursToAdd) throws TrainingHoursException {
     if (hoursToAdd < 0) {
       throw new TrainingHoursException(
         "Невозможно начислить отрицательное количество часов: " + hoursToAdd
@@ -31,24 +44,6 @@ public final class Manager extends Employee implements Trainable, WriterDoc {
         "Невозможно начислить более 200 часов за одно начисление. Попытка начислить: " + hoursToAdd
       );
     }
-
-    System.out.println(getName() + " is conducting training on: " + topic);
-    trainingHours += hoursToAdd;
-  }
-
-  @Override
-  public void setTrainingHours(int trainingHours) throws TrainingHoursException {
-    if (trainingHours < 0) {
-      throw new TrainingHoursException(
-        "Невозможно начислить отрицательное количество часов: " + trainingHours
-      );
-    }
-    if (trainingHours > 200) {
-      throw new TrainingHoursException(
-        "Невозможно начислить более 200 часов за одно начисление. Попытка начислить: " + trainingHours
-      );
-    }
-    this.trainingHours = trainingHours;
   }
 
   @Override
