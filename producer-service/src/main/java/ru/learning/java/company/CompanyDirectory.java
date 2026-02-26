@@ -36,4 +36,14 @@ public class CompanyDirectory {
     System.out.println("Найден следующий сотрудник " + employeesById.get(id).getName());
     return employeesById.get(id);
   }
+
+  public Set<Department> getDepartments() {
+    return departments;
+  }
+
+  public List<Employee> getEmployeesByDepartment(Department department) {
+    return allEmployees.stream()
+      .filter(e -> e.getDepartment() == department)
+      .toList();
+  }
 }

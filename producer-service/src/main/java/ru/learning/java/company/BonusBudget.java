@@ -7,24 +7,17 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 public class BonusBudget {
 
-  private final AtomicInteger goodCounter = new AtomicInteger(0);
-  private final List<String> badLog = new ArrayList<>();
-  private final List<String> goodLog = new CopyOnWriteArrayList<>();
-  private int badCounter = 0;
+  private final AtomicInteger atomicCounter = new AtomicInteger(0);
+  private final List<String> log = new CopyOnWriteArrayList<>();
 
   public void runRaceConditionDemo() throws InterruptedException {
     List<Thread> threads = new ArrayList<>();
 
     for (int i = 0; i < 1000; i++) {
       Thread t = new Thread(() -> {
-        badCounter++;
-        try {
-          badLog.add("Log");
-        } catch (Exception ignored) {
-        }
 
-        goodCounter.incrementAndGet();
-        goodLog.add("Log");
+        atomicCounter.incrementAndGet();
+        log.add("Log");
       });
       threads.add(t);
       t.start();
@@ -33,8 +26,7 @@ public class BonusBudget {
     for (Thread t : threads) t.join();
 
     System.out.println("Мы ожидаем значение: 1000");
-    System.out.println("Bad Counter (обычный int): " + badCounter);
-    System.out.println("Good Counter (Atomic): " + goodCounter.get());
-    System.out.println("Good Log size: " + goodLog.size());
+    System.out.println("Atomic Counter: " + atomicCounter.get());
+    System.out.println("Log size: " + log.size());
   }
 }
