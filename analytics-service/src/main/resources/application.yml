@@ -1,0 +1,73 @@
+spring:
+  application:
+    name: analytics-service
+
+  # Kafka Configuration
+  kafka:
+    bootstrap-servers: ${SPRING_KAFKA_BOOTSTRAP_SERVERS:localhost:9092}
+    consumer:
+      group-id: analytics-service-group
+      auto-offset-reset: earliest
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      properties:
+        spring:
+          json:
+            trusted:
+              packages: '*'
+
+    # Kafka Streams Configuration
+    streams:
+      application-id: analytics-streams
+      properties:
+        default:
+          key:
+            serde: org.apache.kafka.common.serialization.Serdes$StringSerde
+          value:
+            serde: org.springframework.kafka.support.serializer.JsonSerde
+        commit:
+          interval:
+            ms: 1000
+
+  # MongoDB Configuration
+  data:
+    mongodb:
+      uri: ${SPRING_DATA_MONGODB_URI:mongodb://localhost:27017/analytics_db}
+      database: analytics_db
+
+  # Cache Configuration (Caffeine)
+  cache:
+    type: caffeine
+    caffeine:
+      spec: maximumSize=1000,expireAfterWrite=10m
+
+  # Scheduling
+  task:
+    scheduling:
+      pool:
+        size: 5
+
+# Server
+server:
+  port: 8084
+
+# Actuator & Prometheus
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,prometheus,metrics
+  prometheus:
+    metrics:
+      export:
+        enabled: true
+  endpoint:
+    health:
+      show-details: always
+
+# Logging
+logging:
+  level:
+    ru.learning.java: INFO
+    org.apache.kafka: WARN
+    org.springframework.kafka: INFO
