@@ -7,6 +7,7 @@ COPY contracts ./contracts
 COPY producer-service ./producer-service
 COPY validator-service ./validator-service
 COPY consumer-service ./consumer-service
+COPY analytics-service ./analytics-service
 
 RUN mvn clean package -pl producer-service -am -DskipTests
 RUN mvn clean package -pl consumer-service -am -DskipTests

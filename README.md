@@ -3,6 +3,9 @@
 A multi-module Spring Boot system demonstrating a distributed architecture with Kafka messaging, PostgreSQL persistence,
 Elasticsearch search capabilities, and real-time analytics.
 
+Extended project documentation:
+- `PROJECT_STRUCTURE.md` - detailed structure, module relationships, and run guide
+
 ## Overview
 
 The system consists of several microservices communicating via Kafka and utilizing various storage technologies:

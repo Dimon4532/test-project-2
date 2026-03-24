@@ -7,6 +7,7 @@ COPY contracts ./contracts
 COPY producer-service ./producer-service
 COPY consumer-service ./consumer-service
 COPY validator-service ./validator-service
+COPY analytics-service ./analytics-service
 
 # Собираем только нужные модули
 RUN mvn clean install -pl contracts -am -DskipTests
